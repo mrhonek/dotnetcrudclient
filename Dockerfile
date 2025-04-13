@@ -23,6 +23,11 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy a custom nginx config if needed
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+# Set environment variable for port
+ENV PORT 8080
 
-CMD ["nginx", "-g", "daemon off;"] 
+# Expose port 8080 instead of 80
+EXPOSE 8080
+
+# Start Nginx with our custom command to replace port in nginx config
+CMD sh -c "sed -i 's/listen 80/listen $PORT/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
