@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
       <router-link class="navbar-brand" to="/">ASPNETCRUD</router-link>
       <button
         class="navbar-toggler"

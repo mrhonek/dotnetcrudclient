@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', {
         
         return true;
       } catch (error: any) {
-        this.error = error.response?.data?.message || 'Failed to register';
+        this.error = error.response?.data?.message || error.response?.data?.errors?.join(', ') || 'Failed to register';
         return false;
       } finally {
         this.loading = false;

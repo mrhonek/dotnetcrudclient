@@ -28,7 +28,14 @@ export const authApi = {
     return apiClient.post('/api/auth/login', { email, password });
   },
   register: (name: string, email: string, password: string) => {
-    return apiClient.post('/api/auth/register', { name, email, password });
+    return apiClient.post('/api/auth/register', { 
+      username: name,
+      email,
+      password,
+      confirmPassword: password,
+      firstName: name,
+      lastName: ""
+    });
   }
 };
 
