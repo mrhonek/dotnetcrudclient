@@ -8,6 +8,9 @@
         <div v-if="authStore.error" class="alert alert-danger">
           {{ authStore.error }}
         </div>
+        <div v-if="successMessage" class="alert alert-success">
+          {{ successMessage }}
+        </div>
         <form @submit.prevent="register">
           <div class="mb-3">
             <label for="name" class="form-label">Full Name</label>
@@ -87,6 +90,7 @@ export default defineComponent({
     const confirmPassword = ref('');
     const authStore = useAuthStore();
     const router = useRouter();
+    const successMessage = ref('');
 
     const passwordError = computed(() => {
       if (confirmPassword.value && password.value !== confirmPassword.value) {
@@ -100,8 +104,13 @@ export default defineComponent({
         return;
       }
       
+      successMessage.value = '';
+      
       if (await authStore.register(name.value, email.value, password.value)) {
-        router.push('/dashboard');
+        successMessage.value = 'Registration successful! Redirecting to dashboard...';
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 1500);
       }
     };
 
@@ -113,6 +122,7 @@ export default defineComponent({
       passwordError,
       authStore,
       register,
+      successMessage
     };
   },
 });

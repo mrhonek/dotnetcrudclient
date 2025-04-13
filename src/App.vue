@@ -15,7 +15,7 @@ onMounted(() => {
     <NavBar />
   </header>
 
-  <main>
+  <main class="app-container">
     <RouterView />
   </main>
 </template>
@@ -30,5 +30,11 @@ body {
 
 main {
   min-height: calc(100vh - 56px);
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 </style>
