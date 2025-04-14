@@ -15,9 +15,34 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log('Request:', { 
+      url: config.url, 
+      method: config.method, 
+      data: config.data 
+    });
     return config;
   },
   (error) => {
+    console.error('Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor for logging
+apiClient.interceptors.response.use(
+  (response) => {
+    console.log('Response:', { 
+      status: response.status, 
+      data: response.data 
+    });
+    return response;
+  },
+  (error) => {
+    console.error('Response Error:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
     return Promise.reject(error);
   }
 );
@@ -28,14 +53,17 @@ export const authApi = {
     return apiClient.post('/api/auth/login', { email, password });
   },
   register: (name: string, email: string, password: string) => {
-    return apiClient.post('/api/auth/register', { 
-      username: name,
+    const registerData = {
+      username: name.toLowerCase().replace(/\s+/g, ''), // Convert spaces to nothing and lowercase
       email,
       password,
       confirmPassword: password,
-      firstName: name,
-      lastName: ""
-    });
+      firstName: name.split(' ')[0] || name, // Take first part of name or full name if no space
+      lastName: name.split(' ').slice(1).join(' ') || '' // Take rest of name or empty string
+    };
+    
+    console.log('Registering user:', { ...registerData, password: '[REDACTED]' });
+    return apiClient.post('/api/auth/register', registerData);
   }
 };
 

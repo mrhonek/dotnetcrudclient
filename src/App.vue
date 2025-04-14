@@ -11,13 +11,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    <NavBar />
-  </header>
+  <div class="app-wrapper">
+    <header>
+      <NavBar />
+    </header>
 
-  <main class="app-container">
-    <RouterView />
-  </main>
+    <main>
+      <div class="app-container">
+        <RouterView />
+      </div>
+    </main>
+  </div>
 </template>
 
 <style>
@@ -28,13 +32,22 @@ body {
   background-color: #f5f5f5;
 }
 
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 main {
-  min-height: calc(100vh - 56px);
+  flex: 1;
+  width: 100%;
 }
 
 .app-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 15px;
+  width: 100%;
+  box-sizing: border-box;
 }
 </style>

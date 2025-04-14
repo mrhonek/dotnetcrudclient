@@ -31,6 +31,8 @@ export const useAuthStore = defineStore('auth', {
       
       try {
         const response = await authApi.login(email, password);
+        console.log('Login response:', response.data);
+        
         const { token, user } = response.data;
         
         this.token = token;
@@ -41,7 +43,8 @@ export const useAuthStore = defineStore('auth', {
         
         return true;
       } catch (error: any) {
-        this.error = error.response?.data?.message || 'Failed to login';
+        console.error('Login error:', error.response?.data || error.message);
+        this.error = error.response?.data?.message || error.response?.data?.errors?.join(', ') || 'Failed to login';
         return false;
       } finally {
         this.loading = false;
@@ -53,7 +56,10 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
       
       try {
+        console.log('Starting registration for:', { name, email });
         const response = await authApi.register(name, email, password);
+        console.log('Registration response:', response.data);
+        
         const { token, user } = response.data;
         
         this.token = token;
@@ -64,6 +70,7 @@ export const useAuthStore = defineStore('auth', {
         
         return true;
       } catch (error: any) {
+        console.error('Registration error:', error.response?.data || error.message);
         this.error = error.response?.data?.message || error.response?.data?.errors?.join(', ') || 'Failed to register';
         return false;
       } finally {
