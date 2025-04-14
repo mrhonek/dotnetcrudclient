@@ -68,7 +68,7 @@ export const authApi = {
       password,
       confirmPassword: password,
       firstName,
-      lastName
+      lastName: lastName || firstName // Use firstName as lastName if no lastName provided
     };
     
     console.log('Registration data prepared:', {
@@ -78,7 +78,7 @@ export const authApi = {
     });
 
     try {
-      const response = await apiClient.post('/api/auth/register', registerData);
+      const response = await apiClient.post('/api/Auth/register', registerData);
       console.log('Registration successful:', {
         status: response.status,
         userId: response.data.id
