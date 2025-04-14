@@ -1,80 +1,111 @@
 <template>
   <div class="login-container">
-    <div class="card">
-      <div class="card-header text-center">
-        <h3>Login</h3>
-      </div>
-      <div class="card-body">
-        <div v-if="authStore.error" class="alert alert-danger">
+    <div class="login-form">
+      <h2>Login</h2>
+      <form @submit.prevent="login" class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            :class="{ 'is-invalid': emailError }"
+            id="email"
+            v-model="email"
+            required
+            autocomplete="email"
+          />
+          <div class="invalid-feedback" v-if="emailError">
+            {{ emailError }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            :class="{ 'is-invalid': passwordError }"
+            id="password"
+            v-model="password"
+            required
+            autocomplete="current-password"
+          />
+          <div class="invalid-feedback" v-if="passwordError">
+            {{ passwordError }}
+          </div>
+        </div>
+
+        <div v-if="authStore.error" class="alert alert-danger" role="alert">
           {{ authStore.error }}
         </div>
-        <form @submit.prevent="login">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              v-model="email"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              v-model="password"
-              required
-            />
-          </div>
-          <div class="d-grid gap-2">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              :disabled="authStore.loading"
-            >
-              <span v-if="authStore.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              Login
-            </button>
-          </div>
-        </form>
+
+        <button 
+          type="submit" 
+          class="btn btn-primary w-100" 
+          :disabled="isSubmitting || !isFormValid"
+        >
+          <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isSubmitting ? 'Logging in...' : 'Login' }}
+        </button>
+
         <div class="mt-3 text-center">
-          <p>Don't have an account? <router-link to="/register">Register</router-link></p>
+          <router-link to="/register">Don't have an account? Register here</router-link>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
-export default defineComponent({
-  name: 'LoginView',
-  setup() {
-    const email = ref('');
-    const password = ref('');
-    const authStore = useAuthStore();
-    const router = useRouter();
+const router = useRouter();
+const authStore = useAuthStore();
 
-    const login = async () => {
-      if (await authStore.login(email.value, password.value)) {
-        router.push('/dashboard');
-      }
-    };
+const email = ref('');
+const password = ref('');
+const isSubmitting = ref(false);
 
-    return {
-      email,
-      password,
-      authStore,
-      login,
-    };
-  },
+// Clear any existing errors when component mounts
+authStore.clearError();
+
+const emailError = computed(() => {
+  if (!email.value) return 'Email is required';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    return 'Please enter a valid email address';
+  }
+  return '';
 });
+
+const passwordError = computed(() => {
+  if (!password.value) return 'Password is required';
+  if (password.value.length < 6) {
+    return 'Password must be at least 6 characters long';
+  }
+  return '';
+});
+
+const isFormValid = computed(() => {
+  return !emailError.value && !passwordError.value && 
+         email.value.length > 0 && password.value.length > 0;
+});
+
+async function login() {
+  if (!isFormValid.value) return;
+  
+  try {
+    isSubmitting.value = true;
+    const success = await authStore.login(email.value, password.value);
+    
+    if (success) {
+      router.push('/todos');
+    }
+  } finally {
+    isSubmitting.value = false;
+  }
+}
 </script>
 
 <style scoped>
@@ -82,17 +113,56 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
-.card {
+.login-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-header {
-  background-color: #f8f9fa;
-  padding: 20px;
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+}
+
+a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 </style> 

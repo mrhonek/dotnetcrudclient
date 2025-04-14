@@ -6,6 +6,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout
 });
 
 // Add a request interceptor to attach the JWT token if it exists
@@ -52,18 +53,56 @@ export const authApi = {
   login: (email: string, password: string) => {
     return apiClient.post('/api/auth/login', { email, password });
   },
-  register: (name: string, email: string, password: string) => {
+  register: async (name: string, email: string, password: string) => {
+    // Split name into parts, handling potential empty parts
+    const nameParts = name.trim().split(/\s+/);
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ');
+    
+    // Generate username: firstname + first letter of lastname (if exists)
+    const username = (firstName + (lastName ? lastName[0] : '')).toLowerCase();
+    
     const registerData = {
-      username: name.toLowerCase().replace(/\s+/g, ''), // Convert spaces to nothing and lowercase
-      email,
+      username,
+      email: email.trim().toLowerCase(),
       password,
       confirmPassword: password,
-      firstName: name.split(' ')[0] || name, // Take first part of name or full name if no space
-      lastName: name.split(' ').slice(1).join(' ') || '' // Take rest of name or empty string
+      firstName,
+      lastName
     };
     
-    console.log('Registering user:', { ...registerData, password: '[REDACTED]' });
-    return apiClient.post('/api/auth/register', registerData);
+    console.log('Registration data prepared:', {
+      ...registerData,
+      password: '[REDACTED]',
+      confirmPassword: '[REDACTED]'
+    });
+
+    try {
+      const response = await apiClient.post('/api/auth/register', registerData);
+      console.log('Registration successful:', {
+        status: response.status,
+        userId: response.data.id
+      });
+      return response;
+    } catch (error: any) {
+      console.error('Registration failed:', {
+        status: error.response?.status,
+        error: error.response?.data?.message || error.message,
+        validationErrors: error.response?.data?.errors
+      });
+      
+      // Enhance error message based on status code
+      if (error.response?.status === 409) {
+        throw new Error('Email or username already exists');
+      } else if (error.response?.status === 400) {
+        const validationErrors = error.response.data.errors;
+        if (validationErrors) {
+          throw new Error(Object.values(validationErrors).flat().join(', '));
+        }
+      }
+      
+      throw error;
+    }
   }
 };
 
