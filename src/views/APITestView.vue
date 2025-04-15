@@ -17,6 +17,9 @@
       <button class="btn btn-secondary me-2" @click="testAxiosRequest" :disabled="isTesting">
         Test Axios Request
       </button>
+      <button class="btn btn-warning me-2" @click="testSpecificRegistration" :disabled="isTesting">
+        Test Specific Registration
+      </button>
       <button class="btn btn-info" @click="clearResults">
         Clear Results
       </button>
@@ -253,6 +256,81 @@ async function testAxiosRequest() {
         }
       });
     }
+  } finally {
+    isTesting.value = false;
+  }
+}
+
+async function testSpecificRegistration() {
+  try {
+    isTesting.value = true;
+    results.value.unshift({
+      title: 'Specific Registration Test',
+      success: true,
+      data: { message: 'Starting specific registration test...' }
+    });
+
+    // Create test data with specific values
+    const testData = {
+      username: 'testuser' + Date.now(), // Ensure uniqueness
+      email: `test${Date.now()}@example.com`, // Ensure uniqueness
+      password: 'Password123!',
+      confirmPassword: 'Password123!',
+      firstName: 'Test',
+      lastName: 'User'
+    };
+
+    // Log the data we're sending
+    results.value.unshift({
+      title: 'Specific Registration - Data',
+      success: true,
+      data: { 
+        dataBeingSent: {
+          ...testData,
+          password: '[REDACTED]',
+          confirmPassword: '[REDACTED]'
+        }
+      }
+    });
+
+    // Try the registration with this specific data
+    const apiUrl = 'https://dotnetcrud-production.up.railway.app/api/Auth/register';
+    
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(testData),
+    });
+
+    // Try to parse the response as JSON
+    let responseData;
+    try {
+      responseData = await response.json();
+    } catch (e) {
+      responseData = await response.text();
+    }
+
+    results.value.unshift({
+      title: 'Specific Registration - Response',
+      success: response.ok,
+      data: {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries([...response.headers.entries()]),
+        data: responseData
+      }
+    });
+  } catch (error: any) {
+    results.value.unshift({
+      title: 'Specific Registration - Failed',
+      success: false,
+      data: {
+        message: error.message,
+        stack: error.stack
+      }
+    });
   } finally {
     isTesting.value = false;
   }

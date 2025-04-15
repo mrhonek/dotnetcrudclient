@@ -209,6 +209,17 @@ async function register() {
       password: '[REDACTED]',
       confirmPassword: '[REDACTED]'
     });
+
+    // Add logging of password format requirements
+    const passwordChecks = {
+      length: password.value.length >= 6,
+      hasUppercase: /[A-Z]/.test(password.value),
+      hasLowercase: /[a-z]/.test(password.value),
+      hasNumber: /[0-9]/.test(password.value),
+      hasSpecial: /[^a-zA-Z0-9]/.test(password.value),
+      passwordsMatch: password.value === confirmPassword.value
+    };
+    console.log('Password requirements check:', passwordChecks);
     
     // Use direct fetch with explicit URL instead of the auth store
     const apiUrl = 'https://dotnetcrud-production.up.railway.app/api/Auth/register';
@@ -222,11 +233,20 @@ async function register() {
       body: JSON.stringify(registerData),
     });
     
-    const data = await response.json();
-    console.log('Registration response:', {
+    // Log raw response details
+    console.log('Raw response:', {
       status: response.status,
       statusText: response.statusText,
-      data
+      headers: Object.fromEntries([...response.headers.entries()])
+    });
+    
+    const data = await response.json();
+    console.log('Registration response data:', data);
+    console.log('Complete registration response:', {
+      status: response.status,
+      statusText: response.statusText,
+      data,
+      errors: data.errors || 'No specific errors returned'
     });
     
     if (!response.ok) {
