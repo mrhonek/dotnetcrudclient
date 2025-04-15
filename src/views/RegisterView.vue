@@ -331,16 +331,16 @@ const register = async () => {
   align-items: center;
   min-height: 100vh;
   background-color: #f8f9fa;
-  padding: 1rem;
+  padding: 2rem;
 }
 
 .register-card {
   background: white;
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 480px;
+  max-width: 550px;
 }
 
 h1.title {
@@ -366,6 +366,10 @@ h1.title {
     flex-direction: column;
     gap: 1rem;
   }
+  
+  .register-card {
+    padding: 1.5rem;
+  }
 }
 
 .form-group {
@@ -376,7 +380,7 @@ h1.title {
 }
 
 label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
   color: #4a5568;

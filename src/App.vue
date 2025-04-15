@@ -41,13 +41,22 @@ body {
 main {
   flex: 1;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .app-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
+  max-width: 1400px;
   width: 100%;
+  margin: 0 auto;
+  padding: 0 30px;
   box-sizing: border-box;
+}
+
+/* Add responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 15px;
+  }
 }
 </style>

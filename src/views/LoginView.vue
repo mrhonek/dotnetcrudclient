@@ -117,15 +117,16 @@ async function login() {
   align-items: center;
   min-height: 100vh;
   background-color: #f8f9fa;
+  padding: 20px;
 }
 
 .login-form {
   background: white;
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
 }
 
 h2 {
@@ -166,5 +167,20 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* Additional spacing for inputs */
+.form-control {
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.alert {
+  margin-bottom: 1.5rem;
 }
 </style> 

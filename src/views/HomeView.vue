@@ -15,9 +15,9 @@
       </div>
     </div>
 
-    <div class="row mt-5">
-      <div class="col-md-4">
-        <div class="card mb-4">
+    <div class="row mt-5 justify-content-center">
+      <div class="col-lg-4 col-md-6">
+        <div class="card mb-4 h-100">
           <div class="card-body">
             <h5 class="card-title">Clean Architecture</h5>
             <p class="card-text">
@@ -26,8 +26,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card mb-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="card mb-4 h-100">
           <div class="card-body">
             <h5 class="card-title">JWT Authentication</h5>
             <p class="card-text">
@@ -36,8 +36,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card mb-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="card mb-4 h-100">
           <div class="card-body">
             <h5 class="card-title">Vue.js Frontend</h5>
             <p class="card-text">
@@ -48,9 +48,9 @@
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-md-6">
-        <div class="card mb-4">
+    <div class="row mt-3 justify-content-center">
+      <div class="col-lg-6 col-md-6">
+        <div class="card mb-4 h-100">
           <div class="card-body">
             <h5 class="card-title">Features</h5>
             <ul class="list-group list-group-flush">
@@ -63,8 +63,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="card mb-4">
+      <div class="col-lg-6 col-md-6">
+        <div class="card mb-4 h-100">
           <div class="card-body">
             <h5 class="card-title">Technologies</h5>
             <ul class="list-group list-group-flush">
@@ -92,13 +92,35 @@ export default defineComponent({
 
 <style scoped>
 .home-container {
-  padding: 20px;
+  padding: 30px 0;
+  max-width: 100%;
 }
 
 .jumbotron {
-  padding: 2rem 1rem;
+  padding: 3rem 2rem;
   margin-bottom: 2rem;
   background-color: #f8f9fa;
   border-radius: 0.3rem;
+}
+
+.card {
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #007bff;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .jumbotron {
+    padding: 2rem 1rem;
+  }
 }
 </style> 
