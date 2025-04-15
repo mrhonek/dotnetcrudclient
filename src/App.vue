@@ -47,8 +47,8 @@ main {
 }
 
 .main-container {
-  width: 100%;
-  max-width: 1140px;
+  width: 90%;
+  max-width: 1080px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 15px;
@@ -59,6 +59,10 @@ main {
 @media (max-width: 768px) {
   main {
     padding: 10px 0;
+  }
+  
+  .main-container {
+    width: 95%;
   }
 }
 </style>

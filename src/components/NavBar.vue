@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="main-container">
-      <router-link class="navbar-brand" to="/">ASPNETCRUD</router-link>
+    <div class="main-container d-flex align-items-center">
+      <router-link class="navbar-brand m-0" to="/">ASPNETCRUD</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -81,9 +81,21 @@ export default defineComponent({
 <style scoped>
 .navbar {
   padding: 0;
+  height: 56px;
+}
+
+.navbar-brand {
+  padding: 8px 0;
 }
 
 .navbar-collapse {
   flex-grow: 0;
+  height: 100%;
+}
+
+.nav-link {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  line-height: 24px;
 }
 </style> 
