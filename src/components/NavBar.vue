@@ -97,4 +97,10 @@ export default defineComponent({
   padding-bottom: 16px;
   line-height: 24px;
 }
+
+/* Ensure navbar container matches App.vue container */
+.navbar .container {
+  width: 100%;
+  max-width: 960px;
+}
 </style> 

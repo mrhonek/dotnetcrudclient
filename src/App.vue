@@ -44,7 +44,13 @@ main {
   padding: 20px 0;
 }
 
-/* Let Bootstrap handle the container styling */
+/* Override Bootstrap container width */
+.container {
+  width: 100%;
+  max-width: 960px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 
 @media (max-width: 768px) {
   main {
