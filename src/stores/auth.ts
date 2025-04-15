@@ -76,8 +76,12 @@ export const useAuthStore = defineStore('auth', {
       try {
         this.isLoading = true;
         this.error = null;
-
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/Auth/register`, {
+        
+        // Add fallback and debugging for API URL
+        const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
+        console.log('Using API base URL:', apiBaseUrl);
+        
+        const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           password
@@ -109,8 +113,12 @@ export const useAuthStore = defineStore('auth', {
       try {
         this.isLoading = true;
         this.error = null;
-
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/Auth/login`, {
+        
+        // Add fallback and debugging for API URL
+        const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
+        console.log('Using API base URL:', apiBaseUrl);
+        
+        const response = await axios.post(`${apiBaseUrl}/api/Auth/login`, {
           email: email.trim().toLowerCase(),
           password
         }, {
