@@ -1,61 +1,63 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card shadow mb-4">
-        <div class="card-body p-4 p-lg-5">
-          <h2 class="text-center mb-4">Login</h2>
-          <form @submit.prevent="login" class="needs-validation" novalidate>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                :class="{ 'is-invalid': emailError }"
-                id="email"
-                v-model="email"
-                required
-                autocomplete="email"
-                placeholder="Enter your email address"
-              />
-              <div class="invalid-feedback" v-if="emailError">
-                {{ emailError }}
+  <div class="login-container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+          <div class="card-body p-4 p-lg-5">
+            <h2 class="text-center mb-4">Login</h2>
+            <form @submit.prevent="login" class="needs-validation" novalidate>
+              <div class="mb-4">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control form-control-lg"
+                  :class="{ 'is-invalid': emailError }"
+                  id="email"
+                  v-model="email"
+                  required
+                  autocomplete="email"
+                  placeholder="Enter your email address"
+                />
+                <div class="invalid-feedback" v-if="emailError">
+                  {{ emailError }}
+                </div>
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                :class="{ 'is-invalid': passwordError }"
-                id="password"
-                v-model="password"
-                required
-                autocomplete="current-password"
-                placeholder="Enter your password"
-              />
-              <div class="invalid-feedback" v-if="passwordError">
-                {{ passwordError }}
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control form-control-lg"
+                  :class="{ 'is-invalid': passwordError }"
+                  id="password"
+                  v-model="password"
+                  required
+                  autocomplete="current-password"
+                  placeholder="Enter your password"
+                />
+                <div class="invalid-feedback" v-if="passwordError">
+                  {{ passwordError }}
+                </div>
               </div>
-            </div>
 
-            <div v-if="authStore.error" class="alert alert-danger" role="alert">
-              {{ authStore.error }}
-            </div>
+              <div v-if="authStore.error" class="alert alert-danger my-3" role="alert">
+                {{ authStore.error }}
+              </div>
 
-            <button 
-              type="submit" 
-              class="btn btn-primary w-100 py-2" 
-              :disabled="isSubmitting || !isFormValid"
-            >
-              <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
-              {{ isSubmitting ? 'Logging in...' : 'Login' }}
-            </button>
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg w-100 py-2 mt-3" 
+                :disabled="isSubmitting || !isFormValid"
+              >
+                <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ isSubmitting ? 'Logging in...' : 'Login' }}
+              </button>
 
-            <div class="mt-3 text-center">
-              <router-link to="/register">Don't have an account? Register here</router-link>
-            </div>
-          </form>
+              <div class="mt-4 text-center">
+                <router-link to="/register">Don't have an account? Register here</router-link>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -115,13 +117,23 @@ async function login() {
 </script>
 
 <style scoped>
-h2 {
-  color: #333;
+.login-container {
+  min-height: calc(100vh - 120px);
 }
 
-.form-control:focus {
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+h2 {
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.form-control-lg {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
 .btn-primary {

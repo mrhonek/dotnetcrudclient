@@ -1,119 +1,121 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-7">
-      <div class="card shadow mb-4">
-        <div class="card-body p-4 p-lg-5">
-          <h2 class="text-center mb-4">Create Account</h2>
-          
-          <!-- Show API errors from the auth store -->
-          <div v-if="authStore.error" class="alert alert-danger" role="alert">
-            {{ authStore.error }}
-          </div>
+  <div class="register-container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-7">
+        <div class="card shadow">
+          <div class="card-body p-4 p-lg-5">
+            <h2 class="text-center mb-4">Create Account</h2>
+            
+            <!-- Show API errors from the auth store -->
+            <div v-if="authStore.error" class="alert alert-danger mb-4" role="alert">
+              {{ authStore.error }}
+            </div>
 
-          <form @submit.prevent="register" class="register-form">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="firstName" class="form-label">First Name</label>
-                <input 
-                  id="firstName" 
-                  v-model="firstName" 
-                  class="form-control"
-                  :class="{ 'is-invalid': firstNameError }" 
-                  type="text" 
-                  placeholder="Enter first name"
-                  @blur="validateFirstName" 
-                />
-                <div class="invalid-feedback" v-if="firstNameError">{{ firstNameError }}</div>
-              </div>
-              
-              <div class="col-md-6 mb-3">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input 
-                  id="lastName" 
-                  v-model="lastName" 
-                  class="form-control"
-                  :class="{ 'is-invalid': lastNameError }" 
-                  type="text" 
-                  placeholder="Enter last name"
-                  @blur="validateLastName" 
-                />
-                <div class="invalid-feedback" v-if="lastNameError">{{ lastNameError }}</div>
-              </div>
-            </div>
-            
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input 
-                id="email" 
-                v-model="email" 
-                class="form-control"
-                :class="{ 'is-invalid': emailError }" 
-                type="email" 
-                placeholder="Enter email"
-                @blur="validateEmail" 
-              />
-              <div class="invalid-feedback" v-if="emailError">{{ emailError }}</div>
-            </div>
-            
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input 
-                id="password" 
-                v-model="password" 
-                class="form-control"
-                :class="{ 'is-invalid': passwordError }" 
-                type="password" 
-                placeholder="Create password"
-                @input="validatePassword" 
-                @blur="validatePassword" 
-              />
-              
-              <div class="password-strength mt-2">
-                <div class="strength-meter">
-                  <div 
-                    class="strength-value" 
-                    :class="passwordStrengthClass" 
-                    :style="{ width: `${passwordStrength}%` }"
-                  ></div>
+            <form @submit.prevent="register" class="register-form">
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input 
+                    id="firstName" 
+                    v-model="firstName" 
+                    class="form-control form-control-lg"
+                    :class="{ 'is-invalid': firstNameError }" 
+                    type="text" 
+                    placeholder="Enter first name"
+                    @blur="validateFirstName" 
+                  />
+                  <div class="invalid-feedback" v-if="firstNameError">{{ firstNameError }}</div>
                 </div>
-                <span class="strength-text" :class="passwordStrengthClass">
-                  {{ passwordStrengthText }}
-                </span>
+                
+                <div class="col-md-6">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input 
+                    id="lastName" 
+                    v-model="lastName" 
+                    class="form-control form-control-lg"
+                    :class="{ 'is-invalid': lastNameError }" 
+                    type="text" 
+                    placeholder="Enter last name"
+                    @blur="validateLastName" 
+                  />
+                  <div class="invalid-feedback" v-if="lastNameError">{{ lastNameError }}</div>
+                </div>
               </div>
               
-              <div class="invalid-feedback" v-if="passwordError">{{ passwordError }}</div>
-              <small v-if="!passwordError" class="form-text text-muted">
-                Password must be at least 8 characters with uppercase, lowercase, number, and special character.
-              </small>
-            </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                  id="email" 
+                  v-model="email" 
+                  class="form-control form-control-lg"
+                  :class="{ 'is-invalid': emailError }" 
+                  type="email" 
+                  placeholder="Enter email"
+                  @blur="validateEmail" 
+                />
+                <div class="invalid-feedback" v-if="emailError">{{ emailError }}</div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                  id="password" 
+                  v-model="password" 
+                  class="form-control form-control-lg"
+                  :class="{ 'is-invalid': passwordError }" 
+                  type="password" 
+                  placeholder="Create password"
+                  @input="validatePassword" 
+                  @blur="validatePassword" 
+                />
+                
+                <div class="password-strength mt-2">
+                  <div class="strength-meter">
+                    <div 
+                      class="strength-value" 
+                      :class="passwordStrengthClass" 
+                      :style="{ width: `${passwordStrength}%` }"
+                    ></div>
+                  </div>
+                  <span class="strength-text" :class="passwordStrengthClass">
+                    {{ passwordStrengthText }}
+                  </span>
+                </div>
+                
+                <div class="invalid-feedback" v-if="passwordError">{{ passwordError }}</div>
+                <small v-if="!passwordError" class="form-text text-muted">
+                  Password must be at least 8 characters with uppercase, lowercase, number, and special character.
+                </small>
+              </div>
+              
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input 
+                  id="confirmPassword" 
+                  v-model="confirmPassword" 
+                  class="form-control form-control-lg"
+                  :class="{ 'is-invalid': confirmPasswordError }" 
+                  type="password" 
+                  placeholder="Confirm password"
+                  @input="validateConfirmPassword" 
+                  @blur="validateConfirmPassword" 
+                />
+                <div class="invalid-feedback" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
+              </div>
+              
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg w-100 py-2 mt-3" 
+                :disabled="!isFormValid || authStore.isLoading"
+              >
+                <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ authStore.isLoading ? 'Creating Account...' : 'Create Account' }}
+              </button>
+            </form>
             
-            <div class="mb-4">
-              <label for="confirmPassword" class="form-label">Confirm Password</label>
-              <input 
-                id="confirmPassword" 
-                v-model="confirmPassword" 
-                class="form-control"
-                :class="{ 'is-invalid': confirmPasswordError }" 
-                type="password" 
-                placeholder="Confirm password"
-                @input="validateConfirmPassword" 
-                @blur="validateConfirmPassword" 
-              />
-              <div class="invalid-feedback" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
+            <div class="mt-4 text-center">
+              Already have an account? <router-link to="/login">Sign in</router-link>
             </div>
-            
-            <button 
-              type="submit" 
-              class="btn btn-primary w-100 py-2" 
-              :disabled="!isFormValid || authStore.isLoading"
-            >
-              <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-              {{ authStore.isLoading ? 'Creating Account...' : 'Create Account' }}
-            </button>
-          </form>
-          
-          <div class="mt-3 text-center">
-            Already have an account? <router-link to="/login">Sign in</router-link>
           </div>
         </div>
       </div>
@@ -335,146 +337,17 @@ const register = async () => {
 
 <style scoped>
 .register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 150px);
-  padding: 40px 0;
+  min-height: calc(100vh - 120px);
 }
 
-.register-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 2.5rem;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.form-control-lg {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
 }
 
-h1.title {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #2c3e50;
-  font-weight: 600;
-}
-
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-row {
-  display: flex;
-  gap: 1rem;
-}
-
-@media (max-width: 576px) {
-  .form-row {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .register-card {
-    padding: 1.5rem;
-  }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin-bottom: 0.5rem;
-}
-
-label {
-  font-size: 0.95rem;
+.form-label {
   font-weight: 500;
   margin-bottom: 0.5rem;
-  color: #4a5568;
-}
-
-input {
-  padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus {
-  outline: none;
-  border-color: #3182ce;
-  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
-}
-
-.input-error {
-  border-color: #dc3545;
-}
-
-.input-error:focus {
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
-}
-
-.error-text {
-  color: #dc3545;
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
-}
-
-.password-requirements {
-  color: #718096;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-}
-
-.btn-primary {
-  background-color: #4361ee;
-  color: white;
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 0.5rem;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: #3a56d4;
-}
-
-.btn-primary:disabled {
-  background-color: #a0aec0;
-  cursor: not-allowed;
-}
-
-.login-link {
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #4a5568;
-}
-
-.login-link a {
-  color: #4361ee;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
-}
-
-.error-alert {
-  background-color: #fff5f5;
-  border: 1px solid #fed7d7;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  color: #c53030;
-  font-size: 0.9rem;
 }
 
 /* Password strength styles */
@@ -524,22 +397,5 @@ input:focus {
 
 .strength-text.strong {
   color: #28a745;
-}
-
-.spinner {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 0.8s linear infinite;
-  margin-right: 0.5rem;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style> 
