@@ -72,7 +72,7 @@ export const useAuthStore = defineStore('auth', {
       return 'An unexpected error occurred';
     },
 
-    async register(name: string, email: string, password: string) {
+    async register(firstName: string, lastName: string, email: string, password: string) {
       try {
         this.isLoading = true;
         this.error = null;
@@ -80,11 +80,6 @@ export const useAuthStore = defineStore('auth', {
         // Add fallback and debugging for API URL
         const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
         console.log('Using API base URL:', apiBaseUrl);
-        
-        // Split name into first and last name
-        const nameParts = name.trim().split(' ');
-        const firstName = nameParts[0] || '';
-        const lastName = nameParts.slice(1).join(' ') || '';
         
         // Create username from email (before @ symbol)
         const username = email.trim().toLowerCase().split('@')[0];
@@ -94,8 +89,8 @@ export const useAuthStore = defineStore('auth', {
           email: email.trim().toLowerCase(),
           password,
           confirmPassword: password, // Backend requires this field
-          firstName,
-          lastName
+          firstName: firstName.trim(),
+          lastName: lastName.trim()
         });
         
         const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
@@ -103,8 +98,8 @@ export const useAuthStore = defineStore('auth', {
           email: email.trim().toLowerCase(),
           password,
           confirmPassword: password, // Backend requires this field
-          firstName,
-          lastName
+          firstName: firstName.trim(),
+          lastName: lastName.trim()
         }, {
           timeout: 10000 // 10 second timeout
         });

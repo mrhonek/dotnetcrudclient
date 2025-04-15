@@ -251,11 +251,10 @@ const register = async () => {
   }
   
   try {
-    // Combine first and last name for the name parameter
-    const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`;
-    
+    // Pass first name and last name directly to auth store
     const success = await authStore.register(
-      fullName,
+      firstName.value.trim(),
+      lastName.value.trim(),
       email.value.trim(),
       password.value
     );
