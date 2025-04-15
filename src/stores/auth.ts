@@ -110,26 +110,35 @@ export const useAuthStore = defineStore('auth', {
         const timestamp = new Date().getTime();
         const username = `${emailBase}${timestamp}`;
         
-        console.log('Sending registration data:', {
+        // Create the request payload
+        const requestPayload = {
           username,
           email: email.trim().toLowerCase(),
           password,
           confirmPassword: password, // Backend requires this field
           firstName: firstName.trim(),
           lastName: lastName.trim()
-        });
+        };
+        
+        console.log('Sending registration data:', requestPayload);
+        
+        // Log the exact URL being requested
+        const requestUrl = `${apiBaseUrl}/api/Auth/register`;
+        console.log('Request URL:', requestUrl);
         
         try {
-          const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
-            username,
-            email: email.trim().toLowerCase(),
-            password,
-            confirmPassword: password, // Backend requires this field
-            firstName: firstName.trim(),
-            lastName: lastName.trim()
-          }, {
-            timeout: 10000 // 10 second timeout
+          // Set up axios with debugging
+          console.log('Starting API request...');
+          
+          // Make the request with more debugging
+          const response = await axios.post(requestUrl, requestPayload, {
+            timeout: 10000, // 10 second timeout
+            headers: {
+              'Content-Type': 'application/json'
+            }
           });
+          
+          console.log('API request successful, response:', response);
 
           const { token, user } = response.data;
           
