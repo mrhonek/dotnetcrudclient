@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="main-container d-flex align-items-center">
+    <div class="container">
       <router-link class="navbar-brand m-0" to="/">ASPNETCRUD</router-link>
       <button
         class="navbar-toggler"
@@ -13,13 +13,13 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item" v-if="authStore.isAuthenticated">
             <router-link class="nav-link" to="/dashboard" active-class="active">Dashboard</router-link>
           </li>
         </ul>
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav">
           <template v-if="!authStore.isAuthenticated">
             <li class="nav-item">
               <router-link class="nav-link" to="/login" active-class="active">Login</router-link>
@@ -89,7 +89,6 @@ export default defineComponent({
 }
 
 .navbar-collapse {
-  flex-grow: 0;
   height: 100%;
 }
 

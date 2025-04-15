@@ -42,27 +42,19 @@ main {
   flex: 1;
   width: 100%;
   padding: 20px 0;
-  display: flex;
-  justify-content: center;
 }
 
 .main-container {
-  width: 90%;
-  max-width: 1080px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   main {
     padding: 10px 0;
-  }
-  
-  .main-container {
-    width: 95%;
   }
 }
 </style>
