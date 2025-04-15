@@ -16,7 +16,7 @@
     </div>
 
     <div class="row mt-5">
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">Clean Architecture</h5>
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">JWT Authentication</h5>
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">Vue.js Frontend</h5>
