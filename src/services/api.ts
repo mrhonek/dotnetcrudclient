@@ -88,7 +88,35 @@ export const authApi = {
       confirmPassword: '[REDACTED]'
     });
 
+    // Debug URLs that will be used
+    console.log('Debug information:');
+    console.log('- Environment API URL:', import.meta.env.VITE_API_URL);
+    console.log('- Axios baseURL:', apiClient.defaults.baseURL);
+    console.log('- Endpoint path:', '/api/Auth/register');
+    console.log('- Full URL will be:', (apiClient.defaults.baseURL || '') + '/api/Auth/register');
+
     try {
+      // Try a fetch request as a fallback to see if it's an axios issue
+      if (import.meta.env.VITE_ENABLE_DEBUG === 'true') {
+        console.log('Attempting direct fetch as test...');
+        const testUrl = 'https://dotnetcrud-production.up.railway.app/api/Auth/register';
+        const testResponse = await fetch(testUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(registerData),
+        });
+        console.log('Fetch test response:', {
+          status: testResponse.status,
+          statusText: testResponse.statusText,
+          headers: [...testResponse.headers.entries()].reduce((obj: Record<string, string>, [key, value]) => {
+            obj[key] = value;
+            return obj;
+          }, {})
+        });
+      }
+
       const response = await apiClient.post('/api/Auth/register', registerData);
       console.log('Registration successful:', {
         status: response.status,
@@ -98,8 +126,10 @@ export const authApi = {
     } catch (error: any) {
       console.error('Registration failed:', {
         status: error.response?.status,
+        statusText: error.response?.statusText,
         error: error.response?.data?.message || error.message,
-        validationErrors: error.response?.data?.errors
+        validationErrors: error.response?.data?.errors,
+        fullError: error
       });
       
       // Enhanced error handling
