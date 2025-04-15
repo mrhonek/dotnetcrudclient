@@ -81,8 +81,10 @@ export const useAuthStore = defineStore('auth', {
         const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
         console.log('Using API base URL:', apiBaseUrl);
         
-        // Create username from email (before @ symbol)
-        const username = email.trim().toLowerCase().split('@')[0];
+        // Create username from email (before @ symbol) with timestamp for uniqueness
+        const emailBase = email.trim().toLowerCase().split('@')[0];
+        const timestamp = new Date().getTime();
+        const username = `${emailBase}${timestamp}`;
         
         console.log('Sending registration data:', {
           username,
@@ -93,29 +95,42 @@ export const useAuthStore = defineStore('auth', {
           lastName: lastName.trim()
         });
         
-        const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
-          username,
-          email: email.trim().toLowerCase(),
-          password,
-          confirmPassword: password, // Backend requires this field
-          firstName: firstName.trim(),
-          lastName: lastName.trim()
-        }, {
-          timeout: 10000 // 10 second timeout
-        });
+        try {
+          const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
+            username,
+            email: email.trim().toLowerCase(),
+            password,
+            confirmPassword: password, // Backend requires this field
+            firstName: firstName.trim(),
+            lastName: lastName.trim()
+          }, {
+            timeout: 10000 // 10 second timeout
+          });
 
-        const { token, user } = response.data;
-        
-        this.token = token;
-        this.user = user;
-        
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        
-        // Configure axios defaults for future requests
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
-        return true;
+          const { token, user } = response.data;
+          
+          this.token = token;
+          this.user = user;
+          
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
+          
+          // Configure axios defaults for future requests
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          
+          return true;
+        } catch (apiError) {
+          // Log detailed error information
+          if (axios.isAxiosError(apiError) && apiError.response) {
+            console.error('Registration error details:', {
+              status: apiError.response.status,
+              statusText: apiError.response.statusText,
+              data: apiError.response.data
+            });
+          }
+          throw apiError; // Re-throw for the outer catch
+        }
+
       } catch (error) {
         this.error = this.handleApiError(error);
         return false;
