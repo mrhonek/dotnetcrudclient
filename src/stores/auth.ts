@@ -77,7 +77,7 @@ export const useAuthStore = defineStore('auth', {
         this.isLoading = true;
         this.error = null;
 
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/Auth/register`, {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           password
@@ -110,7 +110,7 @@ export const useAuthStore = defineStore('auth', {
         this.isLoading = true;
         this.error = null;
 
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/Auth/login`, {
           email: email.trim().toLowerCase(),
           password
         }, {
