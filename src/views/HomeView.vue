@@ -102,6 +102,12 @@ export default defineComponent({
 .card {
   transition: transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+.card-body {
+  padding: 1.5rem;
 }
 
 .card:hover {
@@ -112,6 +118,11 @@ export default defineComponent({
 .card-title {
   color: #007bff;
   font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.list-group-item {
+  padding: 0.75rem 1.25rem;
 }
 
 @media (max-width: 768px) {

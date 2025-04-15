@@ -17,12 +17,8 @@ onMounted(() => {
     </header>
 
     <main>
-      <div class="container-fluid">
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-10 col-lg-9 col-xl-8">
-            <RouterView />
-          </div>
-        </div>
+      <div class="container">
+        <RouterView />
       </div>
     </main>
   </div>
@@ -45,7 +41,18 @@ body {
 main {
   flex: 1;
   width: 100%;
+  padding: 20px 0;
 }
 
-/* We'll use Bootstrap's container class instead of our custom one */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 10px 0;
+  }
+}
 </style>

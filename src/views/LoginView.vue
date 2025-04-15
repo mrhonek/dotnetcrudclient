@@ -1,8 +1,8 @@
 <template>
-  <div class="row justify-content-center my-5">
-    <div class="col-md-8 col-lg-6 col-xl-5">
-      <div class="card shadow">
-        <div class="card-body p-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow mb-4">
+        <div class="card-body p-4 p-lg-5">
           <h2 class="text-center mb-4">Login</h2>
           <form @submit.prevent="login" class="needs-validation" novalidate>
             <div class="mb-3">
@@ -45,7 +45,7 @@
 
             <button 
               type="submit" 
-              class="btn btn-primary w-100" 
+              class="btn btn-primary w-100 py-2" 
               :disabled="isSubmitting || !isFormValid"
             >
               <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
