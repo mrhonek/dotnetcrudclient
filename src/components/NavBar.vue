@@ -80,7 +80,7 @@ export default defineComponent({
 
 <style scoped>
 .navbar {
-  padding: 0.5rem 0;
+  padding: 0;
 }
 
 .navbar-collapse {

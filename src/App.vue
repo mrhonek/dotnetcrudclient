@@ -48,10 +48,12 @@ main {
 
 .main-container {
   width: 100%;
-  max-width: 1200px;
-  padding: 0 15px;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
   box-sizing: border-box;
-  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
