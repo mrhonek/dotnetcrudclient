@@ -93,8 +93,9 @@ export default defineComponent({
 <style scoped>
 .home-container {
   padding: 20px;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .jumbotron {
@@ -102,6 +103,7 @@ export default defineComponent({
   margin-bottom: 2rem;
   background-color: #f8f9fa;
   border-radius: 0.3rem;
+  text-align: center;
 }
 
 .card {

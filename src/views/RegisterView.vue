@@ -336,8 +336,8 @@ const register = async () => {
 
 .register-card {
   width: 100%;
-  max-width: 600px;
-  padding: 32px;
+  max-width: 650px;
+  padding: 32px 40px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

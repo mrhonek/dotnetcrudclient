@@ -43,14 +43,18 @@ main {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .app-container {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Add responsive adjustments for smaller screens */

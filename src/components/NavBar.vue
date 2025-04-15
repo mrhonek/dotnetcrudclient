@@ -82,7 +82,7 @@ export default defineComponent({
 
 <style scoped>
 .navbar {
-  margin-bottom: 1rem;
+  /* Remove margin-bottom to reduce header height */
 }
 
 .navbar-collapse {
