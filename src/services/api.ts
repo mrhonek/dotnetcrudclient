@@ -9,16 +9,27 @@ const apiClient = axios.create({
   timeout: 10000, // 10 second timeout
 });
 
-// Add a request interceptor to attach the JWT token if it exists
+// Add request logging for debugging
 apiClient.interceptors.request.use(
   (config) => {
+    // Ensure baseURL is properly set
+    if (!config.baseURL || config.baseURL === 'undefined') {
+      console.warn('baseURL is undefined, setting default API URL');
+      config.baseURL = 'https://dotnetcrud-production.up.railway.app';
+    }
+
+    // Log full request URL for debugging
+    const fullUrl = config.baseURL + config.url;
+    console.log('Full request URL:', fullUrl);
+    
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     console.log('Request:', { 
       url: config.url, 
-      method: config.method, 
+      method: config.method,
+      baseURL: config.baseURL,
       data: config.data 
     });
     return config;
@@ -51,7 +62,7 @@ apiClient.interceptors.response.use(
 // Authentication API calls
 export const authApi = {
   login: (email: string, password: string) => {
-    return apiClient.post('/api/auth/login', { email, password });
+    return apiClient.post('/api/Auth/login', { email, password });
   },
   register: async (name: string, email: string, password: string) => {
     // Split name into parts, handling potential empty parts

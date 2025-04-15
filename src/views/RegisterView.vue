@@ -4,18 +4,34 @@
       <h2>Register</h2>
       <form @submit.prevent="register" class="needs-validation" novalidate>
         <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
+          <label for="firstName" class="form-label">First Name</label>
           <input
             type="text"
             class="form-control"
-            :class="{ 'is-invalid': nameError }"
-            id="name"
-            v-model="name"
+            :class="{ 'is-invalid': firstNameError }"
+            id="firstName"
+            v-model="firstName"
             required
-            autocomplete="name"
+            autocomplete="given-name"
           />
-          <div class="invalid-feedback" v-if="nameError">
-            {{ nameError }}
+          <div class="invalid-feedback" v-if="firstNameError">
+            {{ firstNameError }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input
+            type="text"
+            class="form-control"
+            :class="{ 'is-invalid': lastNameError }"
+            id="lastName"
+            v-model="lastName"
+            required
+            autocomplete="family-name"
+          />
+          <div class="invalid-feedback" v-if="lastNameError">
+            {{ lastNameError }}
           </div>
         </div>
 
@@ -96,7 +112,8 @@ import { useAuthStore } from '../stores/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const name = ref('');
+const firstName = ref('');
+const lastName = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
@@ -105,10 +122,17 @@ const isSubmitting = ref(false);
 // Clear any existing errors when component mounts
 authStore.clearError();
 
-const nameError = computed(() => {
-  if (!name.value) return 'Name is required';
-  if (name.value.length < 2) return 'Name must be at least 2 characters long';
-  if (name.value.length > 50) return 'Name must be less than 50 characters';
+const firstNameError = computed(() => {
+  if (!firstName.value) return 'First name is required';
+  if (firstName.value.length < 2) return 'First name must be at least 2 characters long';
+  if (firstName.value.length > 50) return 'First name must be less than 50 characters';
+  return '';
+});
+
+const lastNameError = computed(() => {
+  if (!lastName.value) return 'Last name is required';
+  if (lastName.value.length < 2) return 'Last name must be at least 2 characters long';
+  if (lastName.value.length > 50) return 'Last name must be less than 50 characters';
   return '';
 });
 
@@ -134,6 +158,9 @@ const passwordError = computed(() => {
   if (!/[0-9]/.test(password.value)) {
     return 'Password must contain at least one number';
   }
+  if (!/[^a-zA-Z0-9]/.test(password.value)) {
+    return 'Password must contain at least one special character';
+  }
   return '';
 });
 
@@ -146,10 +173,11 @@ const confirmPasswordError = computed(() => {
 });
 
 const isFormValid = computed(() => {
-  return !nameError.value && !emailError.value && 
+  return !firstNameError.value && !lastNameError.value && !emailError.value && 
          !passwordError.value && !confirmPasswordError.value &&
-         name.value.length > 0 && email.value.length > 0 &&
-         password.value.length > 0 && confirmPassword.value.length > 0;
+         firstName.value.length > 0 && lastName.value.length > 0 &&
+         email.value.length > 0 && password.value.length > 0 && 
+         confirmPassword.value.length > 0;
 });
 
 async function register() {
@@ -157,7 +185,9 @@ async function register() {
   
   try {
     isSubmitting.value = true;
-    const success = await authStore.register(name.value.trim(), email.value.toLowerCase().trim(), password.value);
+    // Combine first and last name for the auth store
+    const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`;
+    const success = await authStore.register(fullName, email.value.toLowerCase().trim(), password.value);
     
     if (success) {
       router.push('/todos');
