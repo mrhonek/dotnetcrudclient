@@ -102,11 +102,14 @@ export default defineComponent({
 .navbar .container {
   width: 920px !important;
   max-width: 920px !important;
+  position: relative !important;
+  left: 12px !important; /* Match the shift in App.vue */
 }
 
 @media (max-width: 992px) {
   .navbar .container {
     width: 95% !important;
+    left: 0 !important; /* No shift on smaller screens */
   }
 }
 </style> 

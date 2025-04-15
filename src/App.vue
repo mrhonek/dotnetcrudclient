@@ -48,16 +48,20 @@ main {
 .container {
   width: 920px !important;
   max-width: 920px !important;
-  margin: 0 auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
   box-sizing: border-box !important;
+  position: relative !important;
+  left: 12px !important; /* Shift container slightly to the right */
   /* outline: 1px solid red !important; /* Debugging outline - remove after fixing */
 }
 
 @media (max-width: 992px) {
   .container {
     width: 95% !important;
+    left: 0 !important; /* No shift on smaller screens */
   }
 }
 
