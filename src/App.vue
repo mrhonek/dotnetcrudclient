@@ -17,7 +17,7 @@ onMounted(() => {
     </header>
 
     <main>
-      <div class="app-container">
+      <div class="container my-4">
         <RouterView />
       </div>
     </main>
@@ -41,22 +41,7 @@ body {
 main {
   flex: 1;
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
-.app-container {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-/* Add responsive adjustments for smaller screens */
-@media (max-width: 768px) {
-  .app-container {
-    padding: 0 10px;
-  }
-}
+/* We'll use Bootstrap's container class instead of our custom one */
 </style>

@@ -329,15 +329,14 @@ const register = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 56px); /* Account for header */
-  padding: 20px 0;
-  background-color: #f8f9fa;
+  min-height: calc(100vh - 150px);
+  padding: 40px 0;
 }
 
 .register-card {
   width: 100%;
-  max-width: 650px;
-  padding: 32px 40px;
+  max-width: 600px;
+  padding: 2.5rem;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid app-container">
+    <div class="container">
       <router-link class="navbar-brand" to="/">ASPNETCRUD</router-link>
       <button
         class="navbar-toggler"

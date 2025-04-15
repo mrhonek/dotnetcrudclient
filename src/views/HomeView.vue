@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container">
+  <div>
     <div class="jumbotron text-center">
       <h1 class="display-4">Welcome to ASPNETCRUD</h1>
       <p class="lead">
@@ -91,11 +91,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.home-container {
-  padding: 30px 0;
-  width: 100%;
-}
-
 .jumbotron {
   padding: 3rem;
   margin-bottom: 2rem;

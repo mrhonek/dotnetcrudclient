@@ -115,18 +115,17 @@ async function login() {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 56px); /* Account for header */
-  background-color: #f8f9fa;
-  padding: 20px 0;
+  min-height: calc(100vh - 150px);
+  padding: 40px 0;
 }
 
 .login-form {
   background: white;
-  padding: 32px 40px;
+  padding: 2.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 550px;
+  max-width: 480px;
 }
 
 h2 {
