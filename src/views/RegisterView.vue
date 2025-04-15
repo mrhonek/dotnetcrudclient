@@ -185,13 +185,92 @@ async function register() {
   
   try {
     isSubmitting.value = true;
-    // Combine first and last name for the auth store
-    const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`;
-    const success = await authStore.register(fullName, email.value.toLowerCase().trim(), password.value);
     
-    if (success) {
-      router.push('/todos');
+    // Combine first and last name for display/feedback
+    const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`;
+    
+    // Create username from first name, first letter of last name + random number
+    const username = (firstName.value.trim().toLowerCase() + 
+                     (lastName.value ? lastName.value.trim()[0].toLowerCase() : '') + 
+                     Math.floor(Math.random() * 1000));
+    
+    // Prepare registration data
+    const registerData = {
+      username,
+      email: email.value.toLowerCase().trim(),
+      password: password.value,
+      confirmPassword: password.value,
+      firstName: firstName.value.trim(),
+      lastName: lastName.value.trim()
+    };
+    
+    console.log('Registration data:', {
+      ...registerData,
+      password: '[REDACTED]',
+      confirmPassword: '[REDACTED]'
+    });
+    
+    // Use direct fetch with explicit URL instead of the auth store
+    const apiUrl = 'https://dotnetcrud-production.up.railway.app/api/Auth/register';
+    console.log('Sending registration request to:', apiUrl);
+    
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registerData),
+    });
+    
+    const data = await response.json();
+    console.log('Registration response:', {
+      status: response.status,
+      statusText: response.statusText,
+      data
+    });
+    
+    if (!response.ok) {
+      // Handle errors
+      if (data.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+        authStore.error = data.errors.join(', ');
+      } else if (data.errors && typeof data.errors === 'object') {
+        authStore.error = Object.values(data.errors).flat().join(', ');
+      } else if (data.message) {
+        authStore.error = data.message;
+      } else {
+        authStore.error = 'Registration failed. Please try again.';
+      }
+      return false;
     }
+    
+    // Handle successful registration
+    if (data.isSuccess && data.token) {
+      // Store user info
+      const user = {
+        username,
+        email: email.value.toLowerCase().trim(),
+        name: fullName,
+        token: data.token
+      };
+      
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      authStore.token = data.token;
+      authStore.user = user;
+      authStore.error = null;
+      
+      router.push('/todos');
+      return true;
+    } else {
+      authStore.error = 'Registration successful but no token received. Please try logging in.';
+      return false;
+    }
+  } catch (error: any) {
+    console.error('Registration error:', error);
+    authStore.error = error.message || 'An unexpected error occurred';
+    return false;
   } finally {
     isSubmitting.value = false;
   }
