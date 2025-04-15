@@ -1,65 +1,58 @@
 <template>
-  <div class="login-container py-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-5">
-        <div class="card shadow">
-          <div class="card-body p-4 p-lg-5">
-            <h2 class="text-center mb-4">Login</h2>
-            <form @submit.prevent="login" class="needs-validation" novalidate>
-              <div class="mb-4">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control form-control-lg"
-                  :class="{ 'is-invalid': emailError }"
-                  id="email"
-                  v-model="email"
-                  required
-                  autocomplete="email"
-                  placeholder="Enter your email address"
-                />
-                <div class="invalid-feedback" v-if="emailError">
-                  {{ emailError }}
-                </div>
-              </div>
-
-              <div class="mb-4">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control form-control-lg"
-                  :class="{ 'is-invalid': passwordError }"
-                  id="password"
-                  v-model="password"
-                  required
-                  autocomplete="current-password"
-                  placeholder="Enter your password"
-                />
-                <div class="invalid-feedback" v-if="passwordError">
-                  {{ passwordError }}
-                </div>
-              </div>
-
-              <div v-if="authStore.error" class="alert alert-danger my-3" role="alert">
-                {{ authStore.error }}
-              </div>
-
-              <button 
-                type="submit" 
-                class="btn btn-primary btn-lg w-100 py-2 mt-3" 
-                :disabled="isSubmitting || !isFormValid"
-              >
-                <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                {{ isSubmitting ? 'Logging in...' : 'Login' }}
-              </button>
-
-              <div class="mt-4 text-center">
-                <router-link to="/register">Don't have an account? Register here</router-link>
-              </div>
-            </form>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <h2 class="login-title">Login</h2>
+      
+      <div v-if="authStore.error" class="alert alert-danger" role="alert">
+        {{ authStore.error }}
+      </div>
+      
+      <form @submit.prevent="login" class="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            :class="{ 'is-error': emailError }"
+            id="email"
+            v-model="email"
+            required
+            autocomplete="email"
+            placeholder="Enter your email address"
+          />
+          <div class="form-error" v-if="emailError">
+            {{ emailError }}
           </div>
         </div>
-      </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            :class="{ 'is-error': passwordError }"
+            id="password"
+            v-model="password"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your password"
+          />
+          <div class="form-error" v-if="passwordError">
+            {{ passwordError }}
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="login-button" 
+          :disabled="isSubmitting || !isFormValid"
+        >
+          <span v-if="isSubmitting" class="button-spinner"></span>
+          {{ isSubmitting ? 'Logging in...' : 'Login' }}
+        </button>
+
+        <div class="register-link">
+          <router-link to="/register">Don't have an account? Register here</router-link>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -117,49 +110,138 @@ async function login() {
 </script>
 
 <style scoped>
+.login-wrapper {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
 .login-container {
-  min-height: calc(100vh - 120px);
+  width: 100%;
+  max-width: 480px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 40px;
 }
 
-h2 {
+.login-title {
   color: #333;
-  font-size: 1.8rem;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.form-control-lg {
-  font-size: 1rem;
-  padding: 0.75rem 1rem;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.form-label {
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 16px;
 }
 
-.btn-primary {
+.form-group input {
+  padding: 14px 16px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a8eff;
+  box-shadow: 0 0 0 3px rgba(74, 142, 255, 0.1);
+}
+
+.form-group input.is-error {
+  border-color: #dc3545;
+}
+
+.form-error {
+  color: #dc3545;
+  font-size: 14px;
+}
+
+.alert {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+
+.login-button {
   background-color: #0d6efd;
-  border-color: #0d6efd;
-  transition: all 0.3s ease;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  position: relative;
 }
 
-.btn-primary:hover:not(:disabled) {
+.login-button:hover:not(:disabled) {
   background-color: #0b5ed7;
-  border-color: #0a58ca;
-  transform: translateY(-1px);
 }
 
-.btn-primary:disabled {
+.login-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.login-button:disabled {
   background-color: #6c757d;
-  border-color: #6c757d;
   cursor: not-allowed;
 }
 
-a {
+.button-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.7s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.register-link {
+  text-align: center;
+  font-size: 15px;
+}
+
+.register-link a {
   color: #0d6efd;
   text-decoration: none;
 }
 
-a:hover {
+.register-link a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+  .login-container {
+    padding: 30px 20px;
+  }
 }
 </style> 

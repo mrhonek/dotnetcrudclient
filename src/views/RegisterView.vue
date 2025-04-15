@@ -1,124 +1,113 @@
 <template>
-  <div class="register-container py-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-7">
-        <div class="card shadow">
-          <div class="card-body p-4 p-lg-5">
-            <h2 class="text-center mb-4">Create Account</h2>
-            
-            <!-- Show API errors from the auth store -->
-            <div v-if="authStore.error" class="alert alert-danger mb-4" role="alert">
-              {{ authStore.error }}
-            </div>
+  <div class="register-wrapper">
+    <div class="register-container">
+      <h2 class="register-title">Create Account</h2>
+      
+      <!-- Show API errors from the auth store -->
+      <div v-if="authStore.error" class="alert alert-danger" role="alert">
+        {{ authStore.error }}
+      </div>
 
-            <form @submit.prevent="register" class="register-form">
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                  <label for="firstName" class="form-label">First Name</label>
-                  <input 
-                    id="firstName" 
-                    v-model="firstName" 
-                    class="form-control form-control-lg"
-                    :class="{ 'is-invalid': firstNameError }" 
-                    type="text" 
-                    placeholder="Enter first name"
-                    @blur="validateFirstName" 
-                  />
-                  <div class="invalid-feedback" v-if="firstNameError">{{ firstNameError }}</div>
-                </div>
-                
-                <div class="col-md-6">
-                  <label for="lastName" class="form-label">Last Name</label>
-                  <input 
-                    id="lastName" 
-                    v-model="lastName" 
-                    class="form-control form-control-lg"
-                    :class="{ 'is-invalid': lastNameError }" 
-                    type="text" 
-                    placeholder="Enter last name"
-                    @blur="validateLastName" 
-                  />
-                  <div class="invalid-feedback" v-if="lastNameError">{{ lastNameError }}</div>
-                </div>
-              </div>
-              
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input 
-                  id="email" 
-                  v-model="email" 
-                  class="form-control form-control-lg"
-                  :class="{ 'is-invalid': emailError }" 
-                  type="email" 
-                  placeholder="Enter email"
-                  @blur="validateEmail" 
-                />
-                <div class="invalid-feedback" v-if="emailError">{{ emailError }}</div>
-              </div>
-              
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input 
-                  id="password" 
-                  v-model="password" 
-                  class="form-control form-control-lg"
-                  :class="{ 'is-invalid': passwordError }" 
-                  type="password" 
-                  placeholder="Create password"
-                  @input="validatePassword" 
-                  @blur="validatePassword" 
-                />
-                
-                <div class="password-strength mt-2">
-                  <div class="strength-meter">
-                    <div 
-                      class="strength-value" 
-                      :class="passwordStrengthClass" 
-                      :style="{ width: `${passwordStrength}%` }"
-                    ></div>
-                  </div>
-                  <span class="strength-text" :class="passwordStrengthClass">
-                    {{ passwordStrengthText }}
-                  </span>
-                </div>
-                
-                <div class="invalid-feedback" v-if="passwordError">{{ passwordError }}</div>
-                <small v-if="!passwordError" class="form-text text-muted">
-                  Password must be at least 8 characters with uppercase, lowercase, number, and special character.
-                </small>
-              </div>
-              
-              <div class="mb-4">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input 
-                  id="confirmPassword" 
-                  v-model="confirmPassword" 
-                  class="form-control form-control-lg"
-                  :class="{ 'is-invalid': confirmPasswordError }" 
-                  type="password" 
-                  placeholder="Confirm password"
-                  @input="validateConfirmPassword" 
-                  @blur="validateConfirmPassword" 
-                />
-                <div class="invalid-feedback" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
-              </div>
-              
-              <button 
-                type="submit" 
-                class="btn btn-primary btn-lg w-100 py-2 mt-3" 
-                :disabled="!isFormValid || authStore.isLoading"
-              >
-                <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                {{ authStore.isLoading ? 'Creating Account...' : 'Create Account' }}
-              </button>
-            </form>
-            
-            <div class="mt-4 text-center">
-              Already have an account? <router-link to="/login">Sign in</router-link>
-            </div>
+      <form @submit.prevent="register" class="register-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input 
+              id="firstName" 
+              v-model="firstName" 
+              :class="{ 'is-error': firstNameError }" 
+              type="text" 
+              placeholder="Enter first name"
+              @blur="validateFirstName" 
+            />
+            <div class="form-error" v-if="firstNameError">{{ firstNameError }}</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input 
+              id="lastName" 
+              v-model="lastName" 
+              :class="{ 'is-error': lastNameError }" 
+              type="text" 
+              placeholder="Enter last name"
+              @blur="validateLastName" 
+            />
+            <div class="form-error" v-if="lastNameError">{{ lastNameError }}</div>
           </div>
         </div>
-      </div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            id="email" 
+            v-model="email" 
+            :class="{ 'is-error': emailError }" 
+            type="email" 
+            placeholder="Enter email"
+            @blur="validateEmail" 
+          />
+          <div class="form-error" v-if="emailError">{{ emailError }}</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            id="password" 
+            v-model="password" 
+            :class="{ 'is-error': passwordError }" 
+            type="password" 
+            placeholder="Create password"
+            @input="validatePassword" 
+            @blur="validatePassword" 
+          />
+          
+          <div class="password-strength">
+            <div class="strength-meter">
+              <div 
+                class="strength-value" 
+                :class="passwordStrengthClass" 
+                :style="{ width: `${passwordStrength}%` }"
+              ></div>
+            </div>
+            <span class="strength-text" :class="passwordStrengthClass">
+              {{ passwordStrengthText }}
+            </span>
+          </div>
+          
+          <div class="form-error" v-if="passwordError">{{ passwordError }}</div>
+          <small v-if="!passwordError" class="password-requirements">
+            Password must be at least 8 characters with uppercase, lowercase, number, and special character.
+          </small>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input 
+            id="confirmPassword" 
+            v-model="confirmPassword" 
+            :class="{ 'is-error': confirmPasswordError }" 
+            type="password" 
+            placeholder="Confirm password"
+            @input="validateConfirmPassword" 
+            @blur="validateConfirmPassword" 
+          />
+          <div class="form-error" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
+        </div>
+        
+        <button 
+          type="submit" 
+          class="register-button" 
+          :disabled="!isFormValid || authStore.isLoading"
+        >
+          <span v-if="authStore.isLoading" class="button-spinner"></span>
+          {{ authStore.isLoading ? 'Creating Account...' : 'Create Account' }}
+        </button>
+      
+        <div class="login-link">
+          Already have an account? <router-link to="/login">Sign in</router-link>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -336,23 +325,150 @@ const register = async () => {
 </script>
 
 <style scoped>
+.register-wrapper {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
 .register-container {
-  min-height: calc(100vh - 120px);
+  width: 100%;
+  max-width: 580px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 40px;
 }
 
-.form-control-lg {
-  font-size: 1rem;
-  padding: 0.75rem 1rem;
+.register-title {
+  color: #333;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.form-label {
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.form-group label {
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 16px;
+}
+
+.form-group input {
+  padding: 14px 16px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a8eff;
+  box-shadow: 0 0 0 3px rgba(74, 142, 255, 0.1);
+}
+
+.form-group input.is-error {
+  border-color: #dc3545;
+}
+
+.form-error {
+  color: #dc3545;
+  font-size: 14px;
+}
+
+.password-requirements {
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.alert {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+
+.register-button {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  position: relative;
+}
+
+.register-button:hover:not(:disabled) {
+  background-color: #0b5ed7;
+}
+
+.register-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.register-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.button-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.7s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.login-link {
+  text-align: center;
+  font-size: 15px;
+}
+
+.login-link a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
 }
 
 /* Password strength styles */
 .password-strength {
-  margin-top: 0.5rem;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .strength-meter {
@@ -381,9 +497,9 @@ const register = async () => {
 }
 
 .strength-text {
-  font-size: 0.75rem;
+  font-size: 13px;
   font-weight: 500;
-  margin-top: 0.25rem;
+  margin-top: 4px;
   display: inline-block;
 }
 
@@ -397,5 +513,16 @@ const register = async () => {
 
 .strength-text.strong {
   color: #28a745;
+}
+
+@media (max-width: 576px) {
+  .register-container {
+    padding: 30px 20px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 24px;
+  }
 }
 </style> 
