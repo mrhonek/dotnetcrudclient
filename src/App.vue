@@ -17,7 +17,7 @@ onMounted(() => {
     </header>
 
     <main>
-      <div class="main-container">
+      <div class="container">
         <RouterView />
       </div>
     </main>
@@ -44,13 +44,7 @@ main {
   padding: 20px 0;
 }
 
-.main-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-  box-sizing: border-box;
-}
+/* Let Bootstrap handle the container styling */
 
 @media (max-width: 768px) {
   main {
