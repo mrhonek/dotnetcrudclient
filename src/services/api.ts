@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+// Use a hardcoded URL since environment variables don't seem to be loading correctly
+const BASE_API_URL = 'https://dotnetcrud-production.up.railway.app';
+
 // Create an axios instance with default config
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app',
+  baseURL: BASE_API_URL, // Hardcoded to ensure it's always defined
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,14 +15,8 @@ const apiClient = axios.create({
 // Add request logging for debugging
 apiClient.interceptors.request.use(
   (config) => {
-    // Ensure baseURL is properly set
-    if (!config.baseURL || config.baseURL === 'undefined') {
-      console.warn('baseURL is undefined, setting default API URL');
-      config.baseURL = 'https://dotnetcrud-production.up.railway.app';
-    }
-
     // Log full request URL for debugging
-    const fullUrl = config.baseURL + config.url;
+    const fullUrl = (config.baseURL || '') + (config.url || '');
     console.log('Full request URL:', fullUrl);
     
     const token = localStorage.getItem('token');
