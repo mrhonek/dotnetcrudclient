@@ -46,17 +46,17 @@ main {
 }
 
 .app-container {
-  max-width: 1400px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
 /* Add responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .app-container {
-    padding: 0 15px;
+    padding: 10px;
   }
 }
 </style>

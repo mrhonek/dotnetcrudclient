@@ -92,12 +92,13 @@ export default defineComponent({
 
 <style scoped>
 .home-container {
-  padding: 30px 0;
-  max-width: 100%;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .jumbotron {
-  padding: 3rem 2rem;
+  padding: 3rem;
   margin-bottom: 2rem;
   background-color: #f8f9fa;
   border-radius: 0.3rem;
