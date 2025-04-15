@@ -37,13 +37,37 @@ export const useAuthStore = defineStore('auth', {
 
     handleApiError(error: any): string {
       if (axios.isAxiosError(error)) {
-        const apiError = error.response?.data as ApiError['data'];
+        console.log('Full error object:', error);
+        console.log('Response data:', error.response?.data);
         
-        // Handle validation errors
-        if (error.response?.status === 400 && apiError.errors) {
-          return Array.isArray(apiError.errors) 
-            ? apiError.errors.join(', ')
-            : Object.values(apiError.errors).flat().join(', ');
+        const apiError = error.response?.data;
+        
+        // Handle detailed validation errors in the specific format returned by ASP.NET Core
+        if (error.response?.status === 400 && apiError?.errors) {
+          // Check if errors is an object with validation fields as keys
+          if (typeof apiError.errors === 'object' && !Array.isArray(apiError.errors)) {
+            // Convert the object of arrays into a flat array of error messages
+            const errorMessages = Object.entries(apiError.errors)
+              .map(([field, messages]) => {
+                if (Array.isArray(messages)) {
+                  return messages.map(msg => `${field}: ${msg}`);
+                }
+                return `${field}: ${messages}`;
+              })
+              .flat()
+              .join(', ');
+            return errorMessages;
+          }
+          
+          // Handle the array format
+          if (Array.isArray(apiError.errors)) {
+            return apiError.errors.join(', ');
+          }
+          
+          // Handle string format
+          if (typeof apiError.errors === 'string') {
+            return apiError.errors;
+          }
         }
 
         // Handle conflict errors (e.g., email already exists)
@@ -57,7 +81,7 @@ export const useAuthStore = defineStore('auth', {
         }
 
         // Handle other API errors with messages
-        if (apiError.message || apiError.title) {
+        if (apiError?.message || apiError?.title) {
           return apiError.message || apiError.title || 'An error occurred';
         }
 

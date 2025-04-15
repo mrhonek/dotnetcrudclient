@@ -170,7 +170,20 @@ const validatePassword = () => {
   } else if (password.value.length < 8) {
     passwordError.value = 'Password must be at least 8 characters';
     return false;
+  } else if (!/[A-Z]/.test(password.value)) {
+    passwordError.value = 'Password must contain at least 1 uppercase letter';
+    return false;
+  } else if (!/[a-z]/.test(password.value)) {
+    passwordError.value = 'Password must contain at least 1 lowercase letter'; 
+    return false;
+  } else if (!/[0-9]/.test(password.value)) {
+    passwordError.value = 'Password must contain at least 1 number';
+    return false;
+  } else if (!/[^a-zA-Z0-9]/.test(password.value)) {
+    passwordError.value = 'Password must contain at least 1 special character';
+    return false;
   }
+  
   passwordError.value = '';
   return true;
 };
