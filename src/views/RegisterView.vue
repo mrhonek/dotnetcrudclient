@@ -213,18 +213,18 @@ async function register() {
     
     // Try with a simpler format that strictly matches the backend model
     const simplifiedData = {
-      username: "testuser" + Math.floor(Math.random() * 1000),
-      email: email.value.toLowerCase().trim(),
-      password: password.value,
-      confirmPassword: password.value,
-      firstName: firstName.value.trim(),
-      lastName: lastName.value.trim()
+      Username: "testuser" + Math.floor(Math.random() * 1000),
+      Email: email.value.toLowerCase().trim(),
+      Password: password.value,
+      ConfirmPassword: password.value,
+      FirstName: firstName.value.trim(),
+      LastName: lastName.value.trim()
     };
     
     console.log('Simplified registration data:', {
       ...simplifiedData,
-      password: '[REDACTED]',
-      confirmPassword: '[REDACTED]'
+      Password: '[REDACTED]',
+      ConfirmPassword: '[REDACTED]'
     });
     
     // Add logging of password format requirements

@@ -378,6 +378,54 @@ async function testSpecificRegistration() {
       }
     });
 
+    // Try with a third format - minimum fields and different values
+    const testData3 = {
+      Username: "user" + Math.floor(Math.random() * 100000), // Completely different format
+      Email: `user${Math.floor(Math.random() * 100000)}@test.com`, // Different domain
+      Password: "Test1234!", // Different password
+      ConfirmPassword: "Test1234!",
+      FirstName: "John",
+      LastName: "Doe"
+    };
+
+    results.value.unshift({
+      title: 'Attempt 3 - Minimal Format',
+      success: true,
+      data: { 
+        message: 'Sending with minimal data and different values...',
+        data: {
+          ...testData3,
+          Password: '[REDACTED]',
+          ConfirmPassword: '[REDACTED]'
+        }
+      }
+    });
+
+    response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(testData3),
+    });
+
+    try {
+      responseData = await response.json();
+    } catch (e) {
+      responseData = await response.text();
+    }
+
+    results.value.unshift({
+      title: 'Attempt 3 Response',
+      success: response.ok,
+      data: {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries([...response.headers.entries()]),
+        data: responseData
+      }
+    });
+
   } catch (error: any) {
     results.value.unshift({
       title: 'Specific Registration - Failed',
