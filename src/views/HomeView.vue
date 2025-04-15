@@ -119,6 +119,7 @@ export default defineComponent({
   color: #007bff;
   font-weight: 600;
   margin-bottom: 1rem;
+  white-space: nowrap;
 }
 
 .list-group-item {
@@ -128,6 +129,10 @@ export default defineComponent({
 @media (max-width: 768px) {
   .jumbotron {
     padding: 2rem 1rem;
+  }
+  
+  .card-title {
+    white-space: normal;
   }
 }
 </style> 

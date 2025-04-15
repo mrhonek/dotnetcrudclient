@@ -19,7 +19,7 @@
             <router-link class="nav-link" to="/dashboard" active-class="active">Dashboard</router-link>
           </li>
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ms-auto">
           <template v-if="!authStore.isAuthenticated">
             <li class="nav-item">
               <router-link class="nav-link" to="/login" active-class="active">Login</router-link>
