@@ -272,8 +272,8 @@ async function testSpecificRegistration() {
 
     // Create test data with specific values
     const testData = {
-      username: 'testuser' + Date.now(), // Ensure uniqueness
-      email: `test${Date.now()}@example.com`, // Ensure uniqueness
+      username: 'testuser' + Math.floor(Math.random() * 1000), // Simple username format
+      email: `test${Math.floor(Math.random() * 1000)}@example.com`,
       password: 'Password123!',
       confirmPassword: 'Password123!',
       firstName: 'Test',
@@ -293,10 +293,17 @@ async function testSpecificRegistration() {
       }
     });
 
-    // Try the registration with this specific data
+    // Try a registration with various formats
     const apiUrl = 'https://dotnetcrud-production.up.railway.app/api/Auth/register';
     
-    const response = await fetch(apiUrl, {
+    // Try with base test data
+    results.value.unshift({
+      title: 'Attempt 1 - Standard Format',
+      success: true,
+      data: { message: 'Sending with standard format...' }
+    });
+
+    let response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -313,7 +320,7 @@ async function testSpecificRegistration() {
     }
 
     results.value.unshift({
-      title: 'Specific Registration - Response',
+      title: 'Attempt 1 Response',
       success: response.ok,
       data: {
         status: response.status,
@@ -322,6 +329,55 @@ async function testSpecificRegistration() {
         data: responseData
       }
     });
+
+    // Try with camelCase properties (in case backend expects different casing)
+    const testData2 = {
+      Username: testData.username,
+      Email: testData.email,
+      Password: testData.password,
+      ConfirmPassword: testData.confirmPassword,
+      FirstName: testData.firstName,
+      LastName: testData.lastName
+    };
+
+    results.value.unshift({
+      title: 'Attempt 2 - Pascal Case Format',
+      success: true,
+      data: { 
+        message: 'Sending with PascalCase properties...',
+        data: {
+          ...testData2,
+          Password: '[REDACTED]',
+          ConfirmPassword: '[REDACTED]'
+        }
+      }
+    });
+
+    response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(testData2),
+    });
+
+    try {
+      responseData = await response.json();
+    } catch (e) {
+      responseData = await response.text();
+    }
+
+    results.value.unshift({
+      title: 'Attempt 2 Response',
+      success: response.ok,
+      data: {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries([...response.headers.entries()]),
+        data: responseData
+      }
+    });
+
   } catch (error: any) {
     results.value.unshift({
       title: 'Specific Registration - Failed',

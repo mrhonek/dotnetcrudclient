@@ -194,9 +194,9 @@ async function register() {
                      (lastName.value ? lastName.value.trim()[0].toLowerCase() : '') + 
                      Math.floor(Math.random() * 1000));
     
-    // Prepare registration data
+    // Prepare registration data with simplified structure
     const registerData = {
-      username,
+      username: username,
       email: email.value.toLowerCase().trim(),
       password: password.value,
       confirmPassword: password.value,
@@ -204,12 +204,29 @@ async function register() {
       lastName: lastName.value.trim()
     };
     
-    console.log('Registration data:', {
+    // Also try a modified version with fully expanded data
+    console.log('Original registration data:', {
       ...registerData,
       password: '[REDACTED]',
       confirmPassword: '[REDACTED]'
     });
-
+    
+    // Try with a simpler format that strictly matches the backend model
+    const simplifiedData = {
+      username: "testuser" + Math.floor(Math.random() * 1000),
+      email: email.value.toLowerCase().trim(),
+      password: password.value,
+      confirmPassword: password.value,
+      firstName: firstName.value.trim(),
+      lastName: lastName.value.trim()
+    };
+    
+    console.log('Simplified registration data:', {
+      ...simplifiedData,
+      password: '[REDACTED]',
+      confirmPassword: '[REDACTED]'
+    });
+    
     // Add logging of password format requirements
     const passwordChecks = {
       length: password.value.length >= 6,
@@ -230,7 +247,7 @@ async function register() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(registerData),
+      body: JSON.stringify(simplifiedData), // Use the simplified data instead
     });
     
     // Log raw response details
