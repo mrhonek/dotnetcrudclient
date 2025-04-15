@@ -115,9 +115,9 @@ async function login() {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 70px); /* Account for header */
+  min-height: calc(100vh - 56px); /* Account for header */
   background-color: #f8f9fa;
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .login-form {

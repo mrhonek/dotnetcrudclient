@@ -329,8 +329,8 @@ const register = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 70px); /* Account for header */
-  padding: 20px;
+  min-height: calc(100vh - 56px); /* Account for header */
+  padding: 20px 0;
   background-color: #f8f9fa;
 }
 

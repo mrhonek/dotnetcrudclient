@@ -43,7 +43,6 @@ main {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .app-container {
@@ -52,15 +51,12 @@ main {
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 /* Add responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .app-container {
-    padding: 10px;
+    padding: 0 10px;
   }
 }
 </style>
