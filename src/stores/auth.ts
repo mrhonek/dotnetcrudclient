@@ -181,18 +181,18 @@ export const useAuthStore = defineStore('auth', {
         const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
         console.log('Using API base URL:', apiBaseUrl);
         
-        // Create username from email or use email as username
-        const username = email.trim().includes('@') ? email.trim().toLowerCase().split('@')[0] : email.trim().toLowerCase();
+        // Use the full email as the username - the backend will handle both
+        const loginPayload = {
+          username: email.trim(),
+          password
+        };
         
         console.log('Sending login data:', {
-          username,
-          password
+          username: loginPayload.username,
+          password: '[REDACTED]'
         });
         
-        const response = await axios.post(`${apiBaseUrl}/api/Auth/login`, {
-          username,
-          password
-        }, {
+        const response = await axios.post(`${apiBaseUrl}/api/Auth/login`, loginPayload, {
           timeout: 10000 // 10 second timeout
         });
 

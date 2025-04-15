@@ -13,6 +13,7 @@
             v-model="email"
             required
             autocomplete="email"
+            placeholder="Enter your email address"
           />
           <div class="invalid-feedback" v-if="emailError">
             {{ emailError }}
@@ -29,6 +30,7 @@
             v-model="password"
             required
             autocomplete="current-password"
+            placeholder="Enter your password"
           />
           <div class="invalid-feedback" v-if="passwordError">
             {{ passwordError }}
@@ -100,7 +102,7 @@ async function login() {
     const success = await authStore.login(email.value, password.value);
     
     if (success) {
-      router.push('/todos');
+      router.push('/dashboard');
     }
   } finally {
     isSubmitting.value = false;
