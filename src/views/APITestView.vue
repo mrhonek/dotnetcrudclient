@@ -426,6 +426,55 @@ async function testSpecificRegistration() {
       }
     });
 
+    // Try with a fourth format - completely unique values with timestamp
+    const timestamp = Date.now();
+    const testData4 = {
+      Username: `user_${timestamp}`,
+      Email: `email_${timestamp}@uniquedomain.com`,
+      Password: "Password123!",
+      ConfirmPassword: "Password123!",
+      FirstName: "Unique",
+      LastName: "User"
+    };
+
+    results.value.unshift({
+      title: 'Attempt 4 - Timestamp-based Unique Values',
+      success: true,
+      data: { 
+        message: 'Sending with timestamp-based unique values...',
+        data: {
+          ...testData4,
+          Password: '[REDACTED]',
+          ConfirmPassword: '[REDACTED]'
+        }
+      }
+    });
+
+    response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(testData4),
+    });
+
+    try {
+      responseData = await response.json();
+    } catch (e) {
+      responseData = await response.text();
+    }
+
+    results.value.unshift({
+      title: 'Attempt 4 Response',
+      success: response.ok,
+      data: {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries([...response.headers.entries()]),
+        data: responseData
+      }
+    });
+
   } catch (error: any) {
     results.value.unshift({
       title: 'Specific Registration - Failed',
