@@ -98,9 +98,15 @@ export default defineComponent({
   line-height: 24px;
 }
 
-/* Ensure navbar container matches App.vue container */
+/* Match App.vue container width exactly */
 .navbar .container {
-  width: 100%;
-  max-width: 960px;
+  width: 920px !important;
+  max-width: 920px !important;
+}
+
+@media (max-width: 992px) {
+  .navbar .container {
+    width: 95% !important;
+  }
 }
 </style> 

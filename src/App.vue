@@ -44,12 +44,21 @@ main {
   padding: 20px 0;
 }
 
-/* Override Bootstrap container width */
+/* Custom container that overrides Bootstrap */
 .container {
-  width: 100%;
-  max-width: 960px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+  width: 920px !important;
+  max-width: 920px !important;
+  margin: 0 auto !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  box-sizing: border-box !important;
+  /* outline: 1px solid red !important; /* Debugging outline - remove after fixing */
+}
+
+@media (max-width: 992px) {
+  .container {
+    width: 95% !important;
+  }
 }
 
 @media (max-width: 768px) {
