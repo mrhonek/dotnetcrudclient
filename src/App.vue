@@ -17,7 +17,7 @@ onMounted(() => {
     </header>
 
     <main>
-      <div class="container">
+      <div class="main-container">
         <RouterView />
       </div>
     </main>
@@ -42,6 +42,16 @@ main {
   flex: 1;
   width: 100%;
   padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
