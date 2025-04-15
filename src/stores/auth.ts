@@ -81,10 +81,30 @@ export const useAuthStore = defineStore('auth', {
         const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
         console.log('Using API base URL:', apiBaseUrl);
         
-        const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
-          name: name.trim(),
+        // Split name into first and last name
+        const nameParts = name.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
+        // Create username from email (before @ symbol)
+        const username = email.trim().toLowerCase().split('@')[0];
+        
+        console.log('Sending registration data:', {
+          username,
           email: email.trim().toLowerCase(),
-          password
+          password,
+          confirmPassword: password, // Backend requires this field
+          firstName,
+          lastName
+        });
+        
+        const response = await axios.post(`${apiBaseUrl}/api/Auth/register`, {
+          username,
+          email: email.trim().toLowerCase(),
+          password,
+          confirmPassword: password, // Backend requires this field
+          firstName,
+          lastName
         }, {
           timeout: 10000 // 10 second timeout
         });
@@ -118,8 +138,16 @@ export const useAuthStore = defineStore('auth', {
         const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://dotnetcrud-production.up.railway.app';
         console.log('Using API base URL:', apiBaseUrl);
         
+        // Create username from email or use email as username
+        const username = email.trim().includes('@') ? email.trim().toLowerCase().split('@')[0] : email.trim().toLowerCase();
+        
+        console.log('Sending login data:', {
+          username,
+          password
+        });
+        
         const response = await axios.post(`${apiBaseUrl}/api/Auth/login`, {
-          email: email.trim().toLowerCase(),
+          username,
           password
         }, {
           timeout: 10000 // 10 second timeout
