@@ -29,7 +29,7 @@
       <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">JWT Authentication</h5>
+            <h5 class="card-title">JWT&nbsp;Authentication</h5>
             <p class="card-text">
               Secure your API with JSON Web Tokens for stateless authentication and authorization.
             </p>
@@ -119,7 +119,8 @@ export default defineComponent({
   color: #007bff;
   font-weight: 600;
   margin-bottom: 1rem;
-  white-space: nowrap;
+  word-break: normal;
+  hyphens: manual;
 }
 
 .list-group-item {
@@ -129,10 +130,6 @@ export default defineComponent({
 @media (max-width: 768px) {
   .jumbotron {
     padding: 2rem 1rem;
-  }
-  
-  .card-title {
-    white-space: normal;
   }
 }
 </style> 

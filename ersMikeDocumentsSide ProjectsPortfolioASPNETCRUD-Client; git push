@@ -1,0 +1,5 @@
+[33mcommit 1e98b08efd580307c7be700c6a70e57ca11e5886[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: mrhonek <26533268+mrhonek@users.noreply.github.com>
+Date:   Sun Apr 13 14:34:11 2025 -0700
+
+    Fix: Configure Dockerfile and railway.toml to use port 8080
