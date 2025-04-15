@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="jumbotron text-center">
+    <div class="jumbotron text-center my-4">
       <h1 class="display-4">Welcome to ASPNETCRUD</h1>
       <p class="lead">
         A clean architecture CRUD application built with ASP.NET Core and Vue.js
@@ -15,9 +15,9 @@
       </div>
     </div>
 
-    <div class="row mt-5 justify-content-center">
-      <div class="col-lg-4 col-md-6">
-        <div class="card mb-4 h-100">
+    <div class="row mt-5">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">Clean Architecture</h5>
             <p class="card-text">
@@ -26,8 +26,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <div class="card mb-4 h-100">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">JWT Authentication</h5>
             <p class="card-text">
@@ -36,8 +36,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <div class="card mb-4 h-100">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">Vue.js Frontend</h5>
             <p class="card-text">
@@ -48,9 +48,9 @@
       </div>
     </div>
 
-    <div class="row mt-3 justify-content-center">
-      <div class="col-lg-6 col-md-6">
-        <div class="card mb-4 h-100">
+    <div class="row mt-3">
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">Features</h5>
             <ul class="list-group list-group-flush">
@@ -63,8 +63,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6">
-        <div class="card mb-4 h-100">
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">Technologies</h5>
             <ul class="list-group list-group-flush">

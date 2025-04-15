@@ -17,8 +17,12 @@ onMounted(() => {
     </header>
 
     <main>
-      <div class="container my-4">
-        <RouterView />
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-9 col-xl-8">
+            <RouterView />
+          </div>
+        </div>
       </div>
     </main>
   </div>

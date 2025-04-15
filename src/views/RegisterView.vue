@@ -1,112 +1,121 @@
 <template>
-  <div class="register-container">
-    <div class="register-card">
-      <h1 class="title">Create Account</h1>
-      
-      <!-- Show API errors from the auth store -->
-      <div v-if="authStore.error" class="error-alert">
-        {{ authStore.error }}
-      </div>
+  <div class="row justify-content-center my-5">
+    <div class="col-md-9 col-lg-8 col-xl-7">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <h2 class="text-center mb-4">Create Account</h2>
+          
+          <!-- Show API errors from the auth store -->
+          <div v-if="authStore.error" class="alert alert-danger" role="alert">
+            {{ authStore.error }}
+          </div>
 
-      <form @submit.prevent="register" class="register-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input 
-              id="firstName" 
-              v-model="firstName" 
-              :class="{ 'input-error': firstNameError }" 
-              type="text" 
-              placeholder="Enter first name"
-              @blur="validateFirstName" 
-            />
-            <span v-if="firstNameError" class="error-text">{{ firstNameError }}</span>
-          </div>
-          
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input 
-              id="lastName" 
-              v-model="lastName" 
-              :class="{ 'input-error': lastNameError }" 
-              type="text" 
-              placeholder="Enter last name"
-              @blur="validateLastName" 
-            />
-            <span v-if="lastNameError" class="error-text">{{ lastNameError }}</span>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input 
-            id="email" 
-            v-model="email" 
-            :class="{ 'input-error': emailError }" 
-            type="email" 
-            placeholder="Enter email"
-            @blur="validateEmail" 
-          />
-          <span v-if="emailError" class="error-text">{{ emailError }}</span>
-        </div>
-        
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input 
-            id="password" 
-            v-model="password" 
-            :class="{ 'input-error': passwordError }" 
-            type="password" 
-            placeholder="Create password"
-            @input="validatePassword" 
-            @blur="validatePassword" 
-          />
-          
-          <div class="password-strength">
-            <div class="strength-meter">
-              <div 
-                class="strength-value" 
-                :class="passwordStrengthClass" 
-                :style="{ width: `${passwordStrength}%` }"
-              ></div>
+          <form @submit.prevent="register" class="register-form">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input 
+                  id="firstName" 
+                  v-model="firstName" 
+                  class="form-control"
+                  :class="{ 'is-invalid': firstNameError }" 
+                  type="text" 
+                  placeholder="Enter first name"
+                  @blur="validateFirstName" 
+                />
+                <div class="invalid-feedback" v-if="firstNameError">{{ firstNameError }}</div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input 
+                  id="lastName" 
+                  v-model="lastName" 
+                  class="form-control"
+                  :class="{ 'is-invalid': lastNameError }" 
+                  type="text" 
+                  placeholder="Enter last name"
+                  @blur="validateLastName" 
+                />
+                <div class="invalid-feedback" v-if="lastNameError">{{ lastNameError }}</div>
+              </div>
             </div>
-            <span class="strength-text" :class="passwordStrengthClass">
-              {{ passwordStrengthText }}
-            </span>
-          </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                id="email" 
+                v-model="email" 
+                class="form-control"
+                :class="{ 'is-invalid': emailError }" 
+                type="email" 
+                placeholder="Enter email"
+                @blur="validateEmail" 
+              />
+              <div class="invalid-feedback" v-if="emailError">{{ emailError }}</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                id="password" 
+                v-model="password" 
+                class="form-control"
+                :class="{ 'is-invalid': passwordError }" 
+                type="password" 
+                placeholder="Create password"
+                @input="validatePassword" 
+                @blur="validatePassword" 
+              />
+              
+              <div class="password-strength mt-2">
+                <div class="strength-meter">
+                  <div 
+                    class="strength-value" 
+                    :class="passwordStrengthClass" 
+                    :style="{ width: `${passwordStrength}%` }"
+                  ></div>
+                </div>
+                <span class="strength-text" :class="passwordStrengthClass">
+                  {{ passwordStrengthText }}
+                </span>
+              </div>
+              
+              <div class="invalid-feedback" v-if="passwordError">{{ passwordError }}</div>
+              <small v-if="!passwordError" class="form-text text-muted">
+                Password must be at least 8 characters with uppercase, lowercase, number, and special character.
+              </small>
+            </div>
+            
+            <div class="mb-4">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input 
+                id="confirmPassword" 
+                v-model="confirmPassword" 
+                class="form-control"
+                :class="{ 'is-invalid': confirmPasswordError }" 
+                type="password" 
+                placeholder="Confirm password"
+                @input="validateConfirmPassword" 
+                @blur="validateConfirmPassword" 
+              />
+              <div class="invalid-feedback" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100" 
+              :disabled="!isFormValid || authStore.isLoading"
+            >
+              <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              {{ authStore.isLoading ? 'Creating Account...' : 'Create Account' }}
+            </button>
+          </form>
           
-          <span v-if="passwordError" class="error-text">{{ passwordError }}</span>
-          <small v-if="!passwordError" class="password-requirements">
-            Password must be at least 8 characters with uppercase, lowercase, number, and special character.
-          </small>
+          <div class="mt-3 text-center">
+            Already have an account? <router-link to="/login">Sign in</router-link>
+          </div>
         </div>
-        
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input 
-            id="confirmPassword" 
-            v-model="confirmPassword" 
-            :class="{ 'input-error': confirmPasswordError }" 
-            type="password" 
-            placeholder="Confirm password"
-            @input="validateConfirmPassword" 
-            @blur="validateConfirmPassword" 
-          />
-          <span v-if="confirmPasswordError" class="error-text">{{ confirmPasswordError }}</span>
-        </div>
-        
-        <button 
-          type="submit" 
-          class="btn-primary" 
-          :disabled="!isFormValid || authStore.isLoading"
-        >
-          <span v-if="authStore.isLoading" class="spinner"></span>
-          {{ authStore.isLoading ? 'Creating Account...' : 'Create Account' }}
-        </button>
-      </form>
-      
-      <div class="login-link">
-        Already have an account? <router-link to="/login">Sign in</router-link>
       </div>
     </div>
   </div>
@@ -468,14 +477,14 @@ input:focus {
   font-size: 0.9rem;
 }
 
+/* Password strength styles */
 .password-strength {
   margin-top: 0.5rem;
-  margin-bottom: 0.25rem;
 }
 
 .strength-meter {
-  height: 0.4rem;
-  background-color: #edf2f7;
+  height: 5px;
+  background-color: #e9ecef;
   border-radius: 2px;
   overflow: hidden;
 }
@@ -487,15 +496,15 @@ input:focus {
 }
 
 .strength-value.weak {
-  background-color: #f56565;
+  background-color: #dc3545;
 }
 
 .strength-value.medium {
-  background-color: #ed8936;
+  background-color: #ffc107;
 }
 
 .strength-value.strong {
-  background-color: #48bb78;
+  background-color: #28a745;
 }
 
 .strength-text {
@@ -506,15 +515,15 @@ input:focus {
 }
 
 .strength-text.weak {
-  color: #e53e3e;
+  color: #dc3545;
 }
 
 .strength-text.medium {
-  color: #dd6b20;
+  color: #ffc107;
 }
 
 .strength-text.strong {
-  color: #38a169;
+  color: #28a745;
 }
 
 .spinner {
