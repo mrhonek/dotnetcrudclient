@@ -76,6 +76,9 @@
           </div>
           
           <span v-if="passwordError" class="error-text">{{ passwordError }}</span>
+          <small v-if="!passwordError" class="password-requirements">
+            Password must be at least 8 characters with uppercase, lowercase, number, and special character.
+          </small>
         </div>
         
         <div class="form-group">
@@ -110,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 
@@ -131,12 +134,23 @@ const emailError = ref('');
 const passwordError = ref('');
 const confirmPasswordError = ref('');
 
+// Clear auth errors when component mounts or is revisited
+onMounted(() => {
+  authStore.clearError();
+});
+
 // Validation methods
 const validateFirstName = () => {
   if (!firstName.value.trim()) {
     firstNameError.value = 'First name is required';
     return false;
   }
+  
+  if (firstName.value.trim().length > 50) {
+    firstNameError.value = 'First name must be less than 50 characters';
+    return false;
+  }
+  
   firstNameError.value = '';
   return true;
 };
@@ -146,29 +160,45 @@ const validateLastName = () => {
     lastNameError.value = 'Last name is required';
     return false;
   }
+  
+  if (lastName.value.trim().length > 50) {
+    lastNameError.value = 'Last name must be less than 50 characters';
+    return false;
+  }
+  
   lastNameError.value = '';
   return true;
 };
 
 const validateEmail = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email.value.trim()) {
+  const emailValue = email.value.trim().toLowerCase();
+  
+  if (!emailValue) {
     emailError.value = 'Email is required';
     return false;
-  } else if (!emailRegex.test(email.value.trim())) {
+  } else if (!emailRegex.test(emailValue)) {
     emailError.value = 'Please enter a valid email address';
     return false;
+  } else if (emailValue.length > 100) {
+    emailError.value = 'Email must be less than 100 characters';
+    return false;
   }
+  
   emailError.value = '';
   return true;
 };
 
 const validatePassword = () => {
+  // Match ASP.NET Core FluentValidation rules
   if (!password.value) {
     passwordError.value = 'Password is required';
     return false;
   } else if (password.value.length < 8) {
     passwordError.value = 'Password must be at least 8 characters';
+    return false;
+  } else if (password.value.length > 100) {
+    passwordError.value = 'Password must be less than 100 characters';
     return false;
   } else if (!/[A-Z]/.test(password.value)) {
     passwordError.value = 'Password must contain at least 1 uppercase letter';
@@ -196,6 +226,7 @@ const validateConfirmPassword = () => {
     confirmPasswordError.value = 'Passwords do not match';
     return false;
   }
+  
   confirmPasswordError.value = '';
   return true;
 };
@@ -238,12 +269,11 @@ const passwordStrengthText = computed(() => {
 // Form validation
 const isFormValid = computed(() => {
   return (
-    !firstNameError.value && firstName.value.trim() !== '' &&
-    !lastNameError.value && lastName.value.trim() !== '' &&
-    !emailError.value && email.value.trim() !== '' &&
-    !passwordError.value && password.value !== '' &&
-    !confirmPasswordError.value && confirmPassword.value !== '' &&
-    password.value === confirmPassword.value
+    validateFirstName() &&
+    validateLastName() &&
+    validateEmail() &&
+    validatePassword() &&
+    validateConfirmPassword()
   );
 });
 
@@ -264,11 +294,10 @@ const register = async () => {
   }
   
   try {
-    // Pass first name and last name directly to auth store
     const success = await authStore.register(
       firstName.value.trim(),
       lastName.value.trim(),
-      email.value.trim(),
+      email.value.trim().toLowerCase(),
       password.value
     );
     
@@ -276,8 +305,21 @@ const register = async () => {
       router.push('/');
     }
   } catch (error) {
-    // Error is handled by the auth store
+    // Error handling is already done in the auth store
     console.error('Registration failed:', error);
+    
+    // Focus on the first input with an error
+    if (firstNameError.value) {
+      document.getElementById('firstName')?.focus();
+    } else if (lastNameError.value) {
+      document.getElementById('lastName')?.focus();
+    } else if (emailError.value) {
+      document.getElementById('email')?.focus();
+    } else if (passwordError.value) {
+      document.getElementById('password')?.focus();
+    } else if (confirmPasswordError.value) {
+      document.getElementById('confirmPassword')?.focus();
+    }
   }
 };
 </script>
@@ -365,6 +407,12 @@ input:focus {
 .error-text {
   color: #dc3545;
   font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.password-requirements {
+  color: #718096;
+  font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
