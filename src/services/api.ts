@@ -57,10 +57,10 @@ export const authApi = {
     // Split name into parts, handling potential empty parts
     const nameParts = name.trim().split(/\s+/);
     const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ');
+    const lastName = nameParts.slice(1).join(' ') || firstName; // Use firstName as lastName if no lastName provided
     
-    // Generate username: firstname + first letter of lastname (if exists)
-    const username = (firstName + (lastName ? lastName[0] : '')).toLowerCase();
+    // Generate username: firstname + first letter of lastname (if exists) + random number for uniqueness
+    const username = (firstName + (lastName ? lastName[0] : '') + Math.floor(Math.random() * 1000)).toLowerCase();
     
     const registerData = {
       username,
@@ -68,7 +68,7 @@ export const authApi = {
       password,
       confirmPassword: password,
       firstName,
-      lastName: lastName || firstName // Use firstName as lastName if no lastName provided
+      lastName
     };
     
     console.log('Registration data prepared:', {
@@ -81,7 +81,7 @@ export const authApi = {
       const response = await apiClient.post('/api/Auth/register', registerData);
       console.log('Registration successful:', {
         status: response.status,
-        userId: response.data.id
+        data: response.data
       });
       return response;
     } catch (error: any) {
@@ -91,14 +91,20 @@ export const authApi = {
         validationErrors: error.response?.data?.errors
       });
       
-      // Enhance error message based on status code
+      // Enhanced error handling
       if (error.response?.status === 409) {
         throw new Error('Email or username already exists');
       } else if (error.response?.status === 400) {
         const validationErrors = error.response.data.errors;
-        if (validationErrors) {
+        if (validationErrors && Array.isArray(validationErrors)) {
+          throw new Error(validationErrors.join(', '));
+        } else if (validationErrors && typeof validationErrors === 'object') {
           throw new Error(Object.values(validationErrors).flat().join(', '));
+        } else if (error.response.data.message) {
+          throw new Error(error.response.data.message);
         }
+      } else if (error.response?.status === 405) {
+        throw new Error('Registration method not allowed. Please contact support.');
       }
       
       throw error;
